@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nota Dedektifleri V11 | Türkçe · English · Русский | RockJazz</title>
+<style>
+:root{--ink:#263052;--purple:#7056c9;--pink:#ef70aa;--gold:#ffc94f;--mint:#55c7a5}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(135deg,#e9f8ff,#f7edff 58%,#fff4df);font-family:system-ui,Arial,sans-serif;color:var(--ink)}
+header{position:relative;background:linear-gradient(110deg,#223568,#7353bd 68%,#b75d9d);color:#fff;text-align:center;padding:23px 14px;box-shadow:0 5px 20px #25345a33}
+header h1{font-size:clamp(26px,5vw,42px);margin:0}header p{margin:7px 0 0}
+.langbar{display:flex;justify-content:center;align-items:center;gap:8px;margin:0 auto 10px;font-weight:800}.langbar select{border:1px solid #ffffff88;border-radius:10px;padding:7px 10px;font:inherit;color:#263052;background:#fff}.langstatus{font-size:11px;opacity:.8;margin-top:5px}.wrap{max-width:1000px;margin:20px auto;padding:0 13px 40px}.stats{display:flex;gap:9px;justify-content:center;flex-wrap:wrap;margin-bottom:16px}
+.stat{background:white;border-radius:14px;padding:10px 15px;font-weight:800;box-shadow:0 4px 14px #28345c12}
+.panel{background:#ffffffed;border:1px solid #e5e2f3;border-radius:22px;padding:20px;box-shadow:0 10px 28px #34406b13}
+h2{margin:0 0 10px;color:#3b4077}.worlds{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px}
+.world{border:2px solid #e6e3f3;background:linear-gradient(145deg,#fff,#f7f3ff);border-radius:17px;padding:14px;text-align:left;cursor:pointer;color:var(--ink)}
+.world:hover{border-color:#9e8bdf;transform:translateY(-2px)}.world:disabled{opacity:.45;cursor:not-allowed;filter:grayscale(.7)}
+.world .emoji{font-size:30px}.world strong{display:block;margin:5px 0}.world small{color:#69708e}.tag{display:inline-block;background:#eeeaff;color:#6049b1;border-radius:20px;padding:4px 9px;font-size:12px;font-weight:800;margin-top:9px}
+#game{display:none}.topline{display:flex;justify-content:space-between;gap:9px;align-items:center;flex-wrap:wrap}.back,.mainbtn{border:0;border-radius:12px;padding:11px 15px;font-weight:800;cursor:pointer}.back{background:#eeedf7;color:#454b70}.mainbtn{background:linear-gradient(110deg,#7056c9,#a45bb9);color:white}
+.progress{height:10px;background:#eeeaf8;border-radius:20px;overflow:hidden;margin:13px 0 18px}.bar{height:100%;width:0;background:linear-gradient(90deg,#63cdb2,#8a72e0);transition:.25s}
+.type{display:inline-block;background:#f0edff;color:#624bb0;padding:5px 10px;border-radius:20px;font-size:12px;font-weight:850;margin-bottom:9px}
+.question{text-align:center;font-size:clamp(19px,3vw,26px);font-weight:850;margin:6px 0 15px}
+.symbol{font-size:76px;text-align:center;min-height:86px;line-height:1.2;margin:5px auto 12px;color:#1f294d}
+.answers{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}
+.answer{border:2px solid #e6e4f3;background:white;border-radius:15px;padding:13px 12px;cursor:pointer;font-weight:750;color:#343b66;min-height:58px;font-size:16px}
+.answer:hover{border-color:#9b8be0;background:#faf8ff}.answer:disabled{cursor:default}.answer.correct{border-color:#35b78f;background:#e9fff7}.answer.wrong{border-color:#e8758e;background:#fff0f3}
+.answer .shape{display:block;font-size:34px;margin-bottom:4px}.answer .sub{display:block;font-size:13px;font-weight:650}
+.writebox{max-width:560px;margin:0 auto;display:flex;gap:8px}.writebox input{flex:1;min-width:0;border:2px solid #dcd7f1;border-radius:13px;padding:14px;font:inherit;font-size:18px}.writebox input:focus{outline:3px solid #dcd3ff}
+.feedback{margin:15px 0 4px;padding:13px 14px;border-radius:13px;background:#f2f0ff;min-height:50px;text-align:center;font-weight:750}
+.lesson{background:#fff8df;border-left:5px solid var(--gold);border-radius:11px;padding:12px 14px;margin-top:13px;font-size:14px;line-height:1.5}
+.actions{display:flex;justify-content:center;margin-top:14px}#finish{display:none;text-align:center;padding:20px 8px}#finish .big{font-size:65px}
+.note{font-size:13px;color:#6c7190;text-align:center;margin-top:10px}
+footer{text-align:center;color:#69708e;font-size:13px;margin:18px}
+@media(max-width:540px){.panel{padding:14px}.symbol{font-size:64px}.writebox{flex-direction:column}.writebox input{width:100%}}
+.answerkey-row{padding:10px 12px;margin:8px 0;border:1px solid #e5e2f3;border-radius:12px;background:#fff}.answerkey-row small{display:block;color:#626985;margin-top:4px;line-height:1.4}\n</style></head>
+<body>
+<header><div class="langbar"><label for="languageSelect">🌐 Dil / Language / Язык</label><select id="languageSelect" onchange="changeLanguage(this.value)"><option value="tr">🇹🇷 Türkçe</option><option value="en">🇬🇧 English</option><option value="ru">🇷🇺 Русский</option></select></div><h1>🎼 NOTA DEDEKTİFLERİ · V6</h1><p>🏰 Müzik Krallığının Sırları · RockJazz Müzik Eğitimi</p><div id="translationStatus" class="langstatus">Dil seçimi: Türkçe</div></header>
+<div class="wrap">
+<div class="stats"><div class="stat">⭐ Puan: <span id="score">0</span></div><div class="stat">❤️ Can: <span id="lives">3</span></div><div class="stat">🏅 Rozet: <span id="badges">0</span>/7</div></div>
+<section id="menu" class="panel"><h2>Macera haritan hazır, dedektif!</h2><p>Her dünyada farklı sayıda soru var. Bazılarında cevabı kendin yazacak, bazılarında şekilleri tanıyacak, bazılarında doğru seçeneği bulacaksın.</p><div class="worlds" id="worlds"></div><div class="lesson"><b>Oyun kuralı:</b> Her doğru cevap 10 puan. Yazılı sorularda cevabını kendi cümlenle verebilirsin. Yazım farklılıkları sorun değildir. Bir dünyayı tamamlayınca sonraki dünya açılır.</div></section>
+<section id="game" class="panel">
+<div class="topline"><button class="back" onclick="backToMap()">← Harita</button><strong id="worldTitle"></strong><strong id="qCount">1 / 20</strong></div><div id="examStage" style="display:none;margin-top:10px;padding:10px;border-radius:12px;background:#fff4d9;font-weight:800;text-align:center"></div><div id="examAttemptInfo" style="display:none;margin-top:8px;font-weight:800;text-align:center"></div>
+<div id="examTimer" style="display:none;margin:12px auto;padding:10px 18px;max-width:190px;border-radius:18px;background:#eaf4ff;border:2px solid #739bdc;text-align:center">
+  <div style="font-size:12px;font-weight:900;letter-spacing:1px">KALAN SÜRE</div>
+  <div id="examTimerNumber" style="font-size:56px;line-height:1.05;font-weight:1000;font-variant-numeric:tabular-nums;color:#244a91">15</div>
+  <div style="font-size:12px;font-weight:800">saniye</div>
+</div>
+<div id="examIntro" style="display:none;text-align:center;padding:24px 14px">
+  <div style="font-size:64px">🏆</div>
+  <h2>NOTA USTALIĞI BÜYÜK FİNALİ</h2>
+  <p style="font-size:17px;font-weight:800">40 soru · 4 bölüm · Her bölüm 10 soru · Her soru 10 puan</p>
+  <div style="text-align:left;background:#fff8e8;border:1px solid #f0d69a;border-radius:16px;padding:16px;line-height:1.65">
+    <strong>🏆 BÜYÜK FİNAL ÖDÜLLERİ</strong><br>
+    • <strong>350–399 puan:</strong> 20 dakikalık ücretsiz solfej ve nota okuma dersi kazanırsın.<br>
+    • <strong>400 tam puan:</strong> 20 dakikalık ücretsiz solfej ve nota okuma dersine ek olarak kendi müzik aletinde 1 ücretsiz ders kazanırsın.<br><br>
+    <strong>🎮 OYUN KURALLARI</strong><br>
+    • Oyun 4 bölümden oluşur; her bölümde 10 soru bulunur.<br>
+    • Her doğru cevap 10 puandır. Toplam puan 400 üzerinden hesaplanır.<br>
+    • Her soru için 15 saniyen vardır. Son 5 saniyede sesli uyarı verilir.<br>
+    • Her 10 sorunun sonunda bölüm değerlendirmesi gösterilir. Değerlendirmeyi gördükten sonra sonraki bölüme geçebilirsin.<br>
+    • Toplam 3 oyun denemesi vardır. Üç başarısız denemeden sonra cevap anahtarı ve açıklamalar açılır.<br>
+    • Oyun sırasında doğru cevaplar gösterilmez.
+  </div>
+  <label style="display:flex;align-items:flex-start;gap:10px;text-align:left;margin:18px auto 8px;max-width:560px;padding:12px 14px;background:#eef6ff;border:1px solid #b9d5f5;border-radius:12px;font-weight:800;line-height:1.45;cursor:pointer">
+    <input id="examNoticeRead" type="checkbox" onchange="toggleExamStart()" style="width:20px;height:20px;flex:0 0 20px;margin-top:1px">
+    <span>Yukarıdaki ödülleri ve oyun kurallarını okudum, anladım. Oyuna başlamayı kabul ediyorum.</span>
+  </label>
+  <button id="examStartButton" class="mainbtn" style="margin-top:10px;opacity:.5;cursor:not-allowed" onclick="beginExam()" disabled>Oyuna başla 🚀</button>
+</div>
+<div class="progress"><div class="bar" id="bar"></div></div>
+<div id="playArea"><div class="type" id="qType">ÇOKTAN SEÇMELİ</div><div class="question" id="question"></div><div class="symbol" id="symbol"></div><div class="answers" id="answers"></div><div class="writebox" id="writebox" style="display:none"><input id="typed" autocomplete="off" placeholder="Cevabını buraya yaz..."><button class="mainbtn" onclick="submitTyped()">Cevabı kontrol et</button></div><div class="note" id="note"></div><div class="feedback" id="feedback">Cevabını seç veya yaz!</div><div class="lesson" id="explain">💡 İpucu burada görünecek.</div><div class="actions"><button class="mainbtn" id="next" onclick="nextQuestion()" style="display:none">Sonraki soru →</button></div></div>
+<div id="finish"><div class="big">🏆</div><h2 id="finishTitle">Harika iş çıkardın!</h2><p id="finishText"></p><button id="examStageContinue" class="mainbtn" style="display:none" onclick="continueExamStage()">Sonraki bölüme geç →</button><button id="examRetry" class="mainbtn" style="display:none" onclick="startExamAttempt()">Sonraki denemeye geç</button><button id="examStudyRetry" class="mainbtn" style="display:none" onclick="startExamAttempt()">Cevapları çalıştım, yeniden dene</button><div id="examAnswerKey" style="display:none;text-align:left;margin-top:18px"></div><button class="mainbtn" onclick="backToMap()">Haritaya dön</button></div>
+</section><footer>🎵 Öğren, dene, keşfet! · Nota Dedektifleri</footer></div>
+<script>
+const Q=(type,prompt,symbol,options,correct,explain,aliases=[])=>({type,prompt,symbol,options,correct,explain,aliases});
+const C=(p,s,o,a,e)=>Q("choice",p,s,o,a,e);
+const V=(p,s,o,a,e)=>Q("visual",p,s,o,a,e);
+const T=(p,s,answers,e)=>Q("write",p,s,null,null,e,answers.map(x=>x.toLowerCase()));
+const worlds=[
+{name:"Nota Ormanı",emoji:"🌳",desc:"Nota şekilleri ve vuruş süreleri",qs:[
+C("Bu nota kaç vuruştur?","♩",["1 vuruş","2 vuruş","4 vuruş","Yarım vuruş"],0,"Bu nota 1 vuruş sürer."),
+C("Bu nota kaç vuruştur?","𝅗𝅥",["4 vuruş","2 vuruş","1 vuruş","Yarım vuruş"],1,"Bu nota 2 vuruş sürer."),
+C("Bu nota kaç vuruştur?","𝅝",["2 vuruş","1 vuruş","4 vuruş","Çeyrek vuruş"],2,"Bu nota 4 vuruş sürer."),
+C("Bu nota kaç vuruştur?","♪",["1 vuruş","Yarım vuruş","2 vuruş","Çeyrek vuruş"],1,"Bu nota yarım vuruş sürer."),
+C("Bu nota kaç vuruştur?","𝅘𝅥𝅯",["Çeyrek vuruş","Yarım vuruş","1 vuruş","2 vuruş"],0,"Bu nota çeyrek vuruş sürer."),
+T("Ekrandaki notanın süresini vuruş olarak yaz.","𝅗𝅥",["2 vuruş","2"],"Bu nota 2 vuruş sürer."),
+T("Bu notanın süresini yaz.","♩",["1 vuruş","1"],"Bu nota 1 vuruş sürer."),
+T("Bu notanın süresini yaz.","𝅝",["4 vuruş","4"],"Bu nota 4 vuruş sürer."),
+T("Bu notanın süresini yaz.","♪",["yarım vuruş","0,5 vuruş","1/2 vuruş","yarım","0.5"],"Sekizlik nota yarım vuruştur."),
+T("Bu notanın süresini yaz.","𝅘𝅥𝅯",["çeyrek vuruş","0,25 vuruş","1/4 vuruş","çeyrek"],"Onaltılık nota çeyrek vuruştur."),
+V("Hangi nota 4 vuruş sürer?", "Nota şekillerini incele",[{s:"♩",t:"1 vuruş"},{s:"𝅝",t:"4 vuruş"},{s:"♪",t:"Yarım vuruş"}],1,"İçi boş, sapı olmayan birlik nota 4 vuruştur."),
+V("Hangisi yarım vuruşluk notadır?","Nota şekillerini seç",[{s:"𝅗𝅥",t:"2 vuruş"},{s:"♪",t:"Yarım vuruş"},{s:"♩",t:"1 vuruş"}],1,"Kuyruklu sekizlik nota yarım vuruştur."),
+C("İki tane 1 vuruşluk nota toplam kaç vuruş eder?","♩ + ♩",["1 vuruş","2 vuruş","3 vuruş","4 vuruş"],1,"1 + 1 = 2 vuruş."),
+C("Bir 2 vuruşluk ve bir 1 vuruşluk nota toplam kaç vuruş eder?","𝅗𝅥 + ♩",["2 vuruş","3 vuruş","4 vuruş"],1,"2 + 1 = 3 vuruş."),
+C("Bir vuruşun içine kaç yarım vuruş sığar?","♪  ♪",["1","2","4"],1,"İki yarım vuruş bir tam vuruş eder."),
+C("Bir vuruşun içine kaç çeyrek vuruş sığar?","𝅘𝅥𝅯 𝅘𝅥𝅯 𝅘𝅥𝅯 𝅘𝅥𝅯",["2","3","4"],2,"Dört çeyrek vuruş bir tam vuruş eder."),
+C("♩ + ♩ + ♩ toplamı kaç vuruştur?","Ritim hesabı",["2","3","4","5"],1,"Üç tane 1 vuruşluk nota toplam 3 vuruştur."),
+C("𝅗𝅥 + 𝅗𝅥 toplamı kaç vuruştur?","Ritim hesabı",["2","3","4","6"],2,"2 + 2 = 4 vuruş."),
+C("Hangisi en uzun sürelidir?","Karşılaştır",["Yarım vuruş","1 vuruş","2 vuruş","4 vuruş"],3,"Bu seçeneklerde en uzun süre 4 vuruştur."),
+C("Hangisi en kısa sürelidir?","Karşılaştır",["4 vuruş","2 vuruş","1 vuruş","Çeyrek vuruş"],3,"Çeyrek vuruş, seçeneklerdeki en kısa süredir."),]},
+{name:"Sessizlik Mağarası",emoji:"🤫",desc:"Sus işaretleri ve sessizlik süreleri",qs:[
+C("Bu sus işareti kaç vuruş sessizliktir?","𝄽",["1 vuruş","2 vuruş","4 vuruş","Yarım vuruş"],0,"Dörtlük sus 1 vuruş sessizliktir."),
+C("Bu sus işareti kaç vuruş sessizliktir?","𝄼",["1 vuruş","2 vuruş","4 vuruş"],1,"İkilik sus 2 vuruş sessizliktir."),
+C("Bu sus işareti kaç vuruş sessizliktir?","𝄻",["4 vuruş","2 vuruş","1 vuruş"],0,"Birlik sus 4 vuruş sessizliktir."),
+C("Sekizlik sus kaç vuruş sessizliktir?","𝄾",["1 vuruş","Yarım vuruş","2 vuruş"],1,"Sekizlik sus yarım vuruştur."),
+C("Onaltılık sus kaç vuruş sessizliktir?","𝄿",["Çeyrek vuruş","Yarım vuruş","1 vuruş"],0,"Onaltılık sus çeyrek vuruştur."),
+T("Bu sus işaretinin süresini yaz.","𝄽",["1 vuruş","1"],"Dörtlük sus 1 vuruş sessizliktir."),
+T("Bu sus işaretinin süresini yaz.","𝄼",["2 vuruş","2"],"İkilik sus 2 vuruş sessizliktir."),
+T("Bu sus işaretinin süresini yaz.","𝄻",["4 vuruş","4"],"Birlik sus 4 vuruş sessizliktir."),
+T("Sekizlik sus kaç vuruş? Cevabını yaz.","𝄾",["yarım vuruş","0,5","0.5","1/2"],"Sekizlik sus yarım vuruştur."),
+T("Onaltılık sus kaç vuruş? Cevabını yaz.","𝄿",["çeyrek vuruş","0,25","0.25","1/4"],"Onaltılık sus çeyrek vuruştur."),
+V("Hangisi 2 vuruşluk sus işaretidir?","İşareti seç",[{s:"𝄼",t:"2 vuruş sus"},{s:"𝄽",t:"1 vuruş sus"},{s:"𝄾",t:"Yarım vuruş sus"}],0,"İkilik sus 2 vuruş sessizliktir."),
+V("Hangisi yarım vuruşluk sus işaretidir?","İşareti seç",[{s:"𝄻",t:"4 vuruş sus"},{s:"𝄾",t:"Yarım vuruş sus"},{s:"𝄽",t:"1 vuruş sus"}],1,"Sekizlik sus yarım vuruştur."),
+C("Bir sus işareti geldiğinde ne yaparız?","🤫",["Sesimizi yükseltiriz","Belirtilen süre sessiz kalırız","Hızlanırız"],1,"Sus işareti, belirtilen süre ses çıkarmadan beklemektir."),
+C("1 vuruşluk sus ile 1 vuruşluk nota toplam kaç vuruştur?","𝄽 + ♩",["1","2","3"],1,"1 vuruş sus + 1 vuruş nota = 2 vuruş."),
+C("2 vuruşluk sus ve 2 vuruşluk nota toplam kaç vuruştur?","𝄼 + 𝅗𝅥",["2","3","4"],2,"2 + 2 = 4 vuruş."),
+C("Bir vuruşta iki yarım vuruşluk sus varsa toplam sessizlik kaç vuruştur?","𝄾 + 𝄾",["Yarım","1","2"],1,"Yarım + yarım = 1 vuruş."),
+C("Sus işaretleri müzikte gereksiz midir?","🤫",["Evet","Hayır, ritmin parçasıdır"],1,"Sessizlik de müziğin ve ritmin önemli bir parçasıdır."),
+C("Hangisi 4 vuruş sessizlik verir?","Seç",["Dörtlük sus","İkilik sus","Birlik sus"],2,"Birlik sus 4 vuruş sessizlik verir."),
+C("Hangisi daha kısa sessizliktir?","Karşılaştır",["2 vuruş sus","Yarım vuruş sus","4 vuruş sus"],1,"Yarım vuruş, diğerlerinden daha kısadır."),
+C("𝄽 + 𝄽 toplam kaç vuruş sessizliktir?","Susları topla",["1","2","4"],1,"1 + 1 = 2 vuruş sessizlik."),]},
+{name:"Bağlar Köprüsü",emoji:"🌈",desc:"Nokta, uzatma bağı, legato ve staccato",qs:[
+C("Notanın yanındaki nokta süreyi ne kadar artırır?","♩.",["Kendi süresinin yarısı kadar","İki katı kadar","Hiç artırmaz"],0,"Nokta notanın kendi süresinin yarısını ekler."),
+C("Noktalı 1 vuruşluk nota kaç vuruş olur?","♩.",["1","1,5","2","3"],1,"1 + yarım = 1,5 vuruş."),
+C("Noktalı 2 vuruşluk nota kaç vuruş olur?","𝅗𝅥.",["2","2,5","3","4"],2,"2 + 1 = 3 vuruş."),
+C("Staccato nasıl çalınır?","♩·",["Kısa ve kesik","Yumuşak ve bağlı","Giderek hızlanarak"],0,"Staccato kısa ve ayrık çalmaktır."),
+C("Legato nasıl çalınır?","⌒",["Kısa ve kesik","Yumuşak ve bağlı","Çok güçlü"],1,"Legato notaları akıcı ve bağlı çalmaktır."),
+T("Dörtlük notanın yanına nokta konursa kaç vuruş olur? Sayıyla yaz.","♩.",["1,5","1.5","bir buçuk","1 buçuk","bir buçuk vuruş"],"1 vuruşun yarısı 0,5'tir. Toplam 1,5 vuruş olur."),
+T("2 vuruşluk notaya nokta eklenirse kaç vuruş olur?","𝅗𝅥.",["3","3 vuruş"],"Nokta 1 vuruş ekler; toplam 3 vuruş olur."),
+T("Aynı sesli iki notayı tek ses gibi uzatan bağın adını yaz.","⌒",["uzatma bağı","legatura","tie","bağ"],"Uzatma bağı aynı yükseklikteki notaları süre bakımından birleştirir."),
+T("Notaları yumuşak ve kesintisiz çalma biçiminin adını yaz.","⌒",["legato","hece bağı","bağlı çalma"],"Legato notaları akıcı ve bağlı çalmaktır."),
+T("Kısa ve kesik çalma işaretinin adını yaz.","•",["staccato","stakato"],"Staccato kısa ve kesik çalmaktır."),
+V("Hangi örnek staccato çalmayı anlatır?","Çalınış biçimini seç",[{s:"♪  ♪  ♪",t:"Kısa ve ayrık"},{s:"♪⌒♪⌒♪",t:"Bağlı ve akıcı"},{s:"𝅝",t:"Uzun ses"}],0,"Staccato notaları kısa ve birbirinden ayrılmış duyurur."),
+V("Hangi şekil uzatma bağını anlatır?","Bağı seç",[{s:"♩⌒♩",t:"Aynı yükseklikte iki nota, bağla birleşmiş"},{s:"♪  ♪",t:"Ayrı iki nota"},{s:"♩.",t:"Noktalı nota"}],0,"Uzatma bağı aynı yükseklikteki iki notayı tek ses gibi birleştirir."),
+C("Uzatma bağında ikinci nota yeniden çalınır mı?","♩⌒♩",["Evet","Hayır, ilk ses sürer"],1,"İkinci nota yeniden çalınmaz; ses toplam süre kadar devam eder."),
+C("Legato bağında notalar nasıl duyulur?","Do–Re–Mi",["Birbirinden kopuk","Akıcı ve bağlı"],1,"Legato, sesleri birbirine yumuşakça bağlar."),
+C("Tenuto işareti ne anlatır?","—",["Notayı tam değeriyle belirgin çal","Notayı çok kısa kes","Başa dön"],0,"Tenuto notayı değerini koruyarak dolu ve belirgin çalmaktır."),
+C("Accent (>) ne ister?",">",["Notayı vurgulu çal","Notayı sustur","Notayı uzat"],0,"Accent, notaya belirgin vurgu yapar."),
+C("Fermata ne yapmamızı ister?","𝄐",["Notayı veya susu uzat","Çok kısa çal","Tekrar et"],0,"Fermata süreyi müzikal ifadeye göre uzatır."),
+C("Bir 1 vuruşluk nota noktalı olursa kaç vuruş sürer?","♩.",["1,25","1,5","2"],1,"Nokta yarım vuruş ekler."),
+C("Legato ve uzatma bağı aynı şey midir?","⌒",["Evet","Hayır, görevleri farklıdır"],1,"Uzatma bağı aynı sesi uzatır; legato farklı sesleri akıcı bağlar."),
+C("Glissando ne demektir?","〰",["Sesler arasında kayarak geçmek","Kısa kesik çalmak","Başa dönmek"],0,"Glissando, sesler arasında kayarak geçiştir."),]},
+{name:"Tekrarlar Kalesi",emoji:"🏰",desc:"Tekrar, dolap, D.C., D.S., Fine ve Coda",qs:[
+C("D.C. (Da Capo) ne demektir?","D.C.",["Başa dön","Segno'ya dön","Bitir"],0,"Da Capo, eserin en başına dön demektir."),
+C("D.S. (Dal Segno) ne demektir?","D.S. 𝄋",["Başa dön","Segno işaretine dön","Coda'ya atla"],1,"Dal Segno, Segno işaretine dön demektir."),
+C("Fine işareti ne anlatır?","Fine",["Burada bitir","Hızlan","Tekrar et"],0,"Fine, bitiş noktasıdır."),
+C("Tekrar işaretinin görevi nedir?","𝄆   𝄇",["Bölümü yeniden çalmak","Sesi güçlendirmek","Yavaşlamak"],0,"Tekrar çizgileri arasında kalan bölüm yeniden çalınır."),
+C("İlk dolap ne zaman çalınır?","1. ───",["İlk geçişte","İkinci geçişte","Hiçbir zaman"],0,"İlk dolap, bölüm ilk çalındığında kullanılır."),
+T("D.C. kısaltmasının açılımını yaz.","D.C.",["da capo","da capo baştan","baştan"],"Da Capo, İtalyanca 'baştan' demektir."),
+T("D.S. işaretinde hangi özel işarete geri döneriz?","D.S. 𝄋",["segno","segno işareti"],"D.S. bizi Segno işaretine götürür."),
+T("Müziğin bitişini gösteren İtalyanca kelimeyi yaz.","Fine",["fine","bitiş","bitir"],"Fine, müziğin bittiği yeri gösterir."),
+T("İlk ve ikinci dolabın kullanılma amacını kısaca yaz.","1. dolap / 2. dolap",["tekrarda farklı son","farklı son","tekrar sırasında farklı bitiş","iki farklı son"],"Dolaplar, tekrar sırasında farklı sonların çalınmasını sağlar."),
+T("D.C. al Fine ne demektir? Kendi cümlenle yaz.","D.C. al Fine",["başa dön ve fineye kadar çal","başa dön fineye kadar","başa dön ve bitişe kadar çal","başa dön fine"],"Başa dönülür ve Fine yazan yere kadar çalınır."),
+V("Hangi şekil tekrar işaretini gösterir?","Doğru işareti seç",[{s:":‖",t:"Tekrar sonu"},{s:"𝄐",t:"Fermata"},{s:"𝄋",t:"Segno"}],0,"Çift çizgi ve noktalı tekrar işaretleri bölümün tekrar edileceğini gösterir."),
+V("Hangisi Segno işaretidir?","Şekli seç",[{s:"𝄋",t:"Segno"},{s:"𝄐",t:"Fermata"},{s:"𝄂",t:"Ölçü çizgisi"}],0,"Segno, D.S. ile geri dönülecek işarettir."),
+V("Hangisi birinci ve ikinci dolapları doğru gösterir?","Dolap çizimini seç",[{s:"[1]──── [2]────",t:"İki farklı geçiş sonu"},{s:"𝄐 𝄐",t:"İki fermata"},{s:"♩ ♩",t:"İki nota"}],0,"Dolap numaraları tekrarın farklı geçişlerinde çalınacak sonları gösterir."),
+C("D.C. al Coda ne anlatır?","D.C. al Coda",["Başa dön, Coda işaretinde özel sona geç","Segno'ya dön ve bitir","Sadece tekrar et"],0,"Başa dönülür; Coda işaretine gelince özel bitiş bölümüne atlanır."),
+C("D.S. al Fine ne anlatır?","D.S. al Fine",["Başa dön","Segno'ya dön ve Fine'da bitir","Coda'ya atla"],1,"Segno'ya dönülür ve Fine noktasında eser bitirilir."),
+C("Coda ne demektir?","𝄌",["Özel bitiş bölümü","Başa dön","Yavaşla"],0,"Coda, eserin özel bitiş bölümüdür."),
+C("To Coda işareti neyi hatırlatır?","To Coda",["Coda bölümüne geç","Başa dön","Fine'da bitir"],0,"To Coda, Coda bölümüne atlamamız gerektiğini söyler."),
+C("D.S. ile D.C. arasındaki fark nedir?","Karşılaştır",["İkisi de aynı yere döner","D.S. Segno'ya, D.C. başa döner","D.C. Coda'ya döner"],1,"D.S. Segno'ya, D.C. eserin başına götürür."),
+C("İkinci dolap hangi durumda çalınır?","[1] [2]",["İlk geçişte","Tekrar dönüşünde","Eser başlamadan önce"],1,"Tekrar dönüşünde birinci dolap atlanır ve ikinci dolap çalınır."),
+C("Fine işaretini gördüğümüzde her zaman hemen mi bitiririz?","Fine",["Evet, her zaman","Yalnızca yönlendirme bizi Fine'a getirdiğinde"],1,"D.C. al Fine veya D.S. al Fine gibi yönergelerle Fine noktasında bitirilir."),]},
+{name:"Tempo Yarışı",emoji:"🐎",desc:"Hız terimleri ve tempo değişimleri",qs:[
+C("Largo nasıl bir tempodur?","🐢",["Çok yavaş","Çok hızlı","Orta hızlı"],0,"Largo çok yavaş ve geniş bir tempodur."),
+C("Andante ne anlama gelir?","🚶",["Koşar gibi","Yürür gibi","Çok ağır"],1,"Andante, yürür gibi bir tempodur."),
+C("Allegro nasıl çalınır?","🐎",["Yavaş","Hızlı ve canlı","Çok hafif"],1,"Allegro hızlı ve canlı demektir."),
+C("Presto ne demektir?","🐆",["Çok yavaş","Orta hızda","Çok hızlı"],2,"Presto çok hızlı tempodur."),
+C("Moderato ne demektir?","🚶‍♀️",["Orta hızda","Çok hızlı","Çok yavaş"],0,"Moderato orta hızda demektir."),
+T("Giderek hızlanmayı anlatan terimi yaz.","⏩",["accelerando","accel","accelerando (accel.)"],"Accelerando giderek hızlanmak demektir."),
+T("Giderek yavaşlamayı anlatan terimi yaz.","🐢",["ritardando","rallentando","rit","rall"],"Ritardando veya rallentando giderek yavaşlamaktır."),
+T("Önceki ana hıza geri dönmeyi anlatan terimi yaz.","A tempo",["a tempo","atempo"],"A tempo, önceki ana tempoya dön demektir."),
+T("Çok hızlı tempoyu anlatan terimi yaz.","Presto",["presto"],"Presto çok hızlı demektir."),
+T("Yürür gibi tempoyu anlatan terimi yaz.","Andante",["andante"],"Andante yürür gibi tempodur."),
+V("En yavaş tempoyu seç.","Hayvanların hızını düşün",[{s:"🐢 Largo",t:"Çok yavaş"},{s:"🐎 Allegro",t:"Hızlı"},{s:"🐆 Presto",t:"Çok hızlı"}],0,"Largo, bu seçenekler içinde en yavaş tempodur."),
+V("En hızlı tempoyu seç.","Hız yarışında",[{s:"Andante",t:"Yürür gibi"},{s:"Presto",t:"Çok hızlı"},{s:"Largo",t:"Çok yavaş"}],1,"Presto çok hızlı tempodur."),
+V("Giderek yavaşlama hangisidir?","Terimi seç",[{s:"Accelerando",t:"Hızlan"},{s:"Ritardando",t:"Yavaşla"},{s:"A tempo",t:"Ana hıza dön"}],1,"Ritardando giderek yavaşlamak demektir."),
+C("BPM neyi anlatır?","BPM",["Dakikadaki vuruş sayısını","Sesin yüksekliğini","Nota adını"],0,"BPM, bir dakikadaki vuruş sayısını anlatır."),
+C("Dakikada 60 vuruş, dakikada 120 vuruştan daha mı yavaştır?","60 BPM / 120 BPM",["Evet","Hayır"],0,"60 BPM'de vuruşlar daha seyrektir, yani tempo daha yavaştır."),
+C("Vivace nasıl bir tempodur?","✨",["Canlı ve hızlı","Çok yavaş","Sessiz"],0,"Vivace canlı ve hızlı bir tempodur."),
+C("Grave ne demektir?","🐌",["Ağır ve çok yavaş","Çok hızlı","Orta hızlı"],0,"Grave ağır ve çok yavaş bir tempodur."),
+C("Tempo primo ne demektir?","Tempo primo",["İlk tempoya dön","Daha hızlı çal","Bitir"],0,"Tempo primo, eserin ilk temposuna dön demektir."),
+C("Rubato ne anlama gelir?","🎶",["Müzikal ifadeye göre esnek zaman kullanımı","Her notayı aynı hızda çalmak","Sesi kesmek"],0,"Rubato, müzikal anlatım için zamanın esnek kullanılmasıdır."),
+C("Larghetto, Largo'ya göre genellikle nasıldır?","Karşılaştır",["Biraz daha hareketli","Daha hızlıdan çok hızlı","Aynı kelime"],0,"Larghetto genellikle Largo'dan biraz daha hızlıdır."),]},
+{name:"Dinamikler Sarayı",emoji:"🎭",desc:"Sesin şiddeti ve ifade işaretleri",qs:[
+C("p (piano) ne demektir?","p",["Hafif","Güçlü","Çok hızlı"],0,"Piano, hafif çal demektir."),
+C("f (forte) ne demektir?","f",["Hafif","Güçlü","Yavaş"],1,"Forte güçlü çal demektir."),
+C("pp (pianissimo) ne demektir?","pp",["Çok hafif","Çok güçlü","Orta güçlü"],0,"Pianissimo çok hafif çal demektir."),
+C("ff (fortissimo) ne demektir?","ff",["Çok hafif","Çok güçlü","Orta hafif"],1,"Fortissimo çok güçlü çal demektir."),
+C("mf (mezzo forte) ne demektir?","mf",["Orta güçlü","Çok hafif","Çok hızlı"],0,"Mezzo forte orta güçlü demektir."),
+T("Sesi giderek güçlendiren işaretin adını yaz.","<",["crescendo","cresc"],"Crescendo sesi giderek güçlendirir."),
+T("Sesi giderek hafifleten işaretin adını yaz."," >",["diminuendo","decrescendo","dim","decresc"],"Diminuendo veya decrescendo sesi giderek hafifletir."),
+T("Hafif çal anlamındaki İtalyanca terimi yaz.","p",["piano"],"Piano, hafif çal demektir."),
+T("Güçlü çal anlamındaki İtalyanca terimi yaz.","f",["forte"],"Forte, güçlü çal demektir."),
+T("Bir sese aniden güçlü vurgu yapmayı anlatan terimi yaz.","sfz",["sforzando","sforzato","sfz"],"Sforzando ani ve güçlü vurgudur."),
+V("Hangisi çok hafif çalmayı anlatır?","Dinamik işaretini seç",[{s:"pp",t:"Çok hafif"},{s:"f",t:"Güçlü"},{s:"ff",t:"Çok güçlü"}],0,"pp, pianissimo yani çok hafif demektir."),
+V("Hangisi çok güçlü çalmayı anlatır?","Dinamik işaretini seç",[{s:"p",t:"Hafif"},{s:"ff",t:"Çok güçlü"},{s:"mp",t:"Orta hafif"}],1,"ff, fortissimo yani çok güçlü demektir."),
+V("Hangi şekil crescendo'yu anlatır?","Sesin değişimini seç",[{s:"<",t:"Giderek güçlenir"},{s:">",t:"Giderek hafifler"},{s:"—",t:"Aynı değerde tut"}],0,"Crescendo işareti açılarak büyür; ses giderek güçlenir."),
+C("mp ne demektir?","mp",["Orta hafif","Çok güçlü","Çok hafif"],0,"Mezzo piano orta hafif çal demektir."),
+C("Dinamikler müziğin hangi özelliğini anlatır?","🎵",["Sesin şiddetini","Müziğin hızını","Nota süresini"],0,"Dinamikler sesin ne kadar hafif veya güçlü olacağını anlatır."),
+C("Decrescendo ne demektir?"," >",["Giderek güçlen","Giderek hafifle","Birden hızlan"],1,"Decrescendo sesin giderek azalmasıdır."),
+C("Bir eserde önce f sonra p yazıyorsa nasıl çalmalıyız?","f → p",["Önce güçlü, sonra hafif","Önce hafif, sonra güçlü","İkisi de hızlı"],0,"f güçlü, p hafif demektir."),
+C("Sforzando nasıl bir vurgu ister?","sfz",["Aniden ve güçlü","Giderek hafif","Yumuşak ve bağlı"],0,"Sforzando ani ve belirgin bir güç vurgusudur."),
+C("pp mi daha hafiftir, p mi?","pp / p",["pp daha hafif","p daha hafif","Aynıdır"],0,"pp, p'den daha hafif çalınır."),
+C("ff mi daha güçlüdür, f mi?","ff / f",["f daha güçlü","ff daha güçlü","Aynıdır"],1,"ff, f'den daha güçlüdür."),]},
+{name:"Büyük Müzisyen Sınavı",emoji:"👑",desc:"Bütün müzik işaretlerini kullan!",qs:[
+C("8va işareti ne anlama gelir?","8va",["Bir oktav tiz çal","Bir oktav pes çal","Başa dön"],0,"8va, yazılan notaları bir oktav tiz çalmaktır."),
+C("8vb işareti ne anlama gelir?","8vb",["Bir oktav tiz çal","Bir oktav pes çal","İki kez tekrar et"],1,"8vb, yazılan notaları bir oktav pes çalmaktır."),
+C("Nefes işareti neyi gösterir?","‚",["Nefes alınacak yeri","Tekrar yerini","Sesi güçlendirmeyi"],0,"Nefes işareti özellikle şarkı söylerken nefes alınacak yeri belirtir."),
+C("Caesura ne anlatır?","//",["Kısa veya belirgin duraklama","Çok hızlı çalma","Bir oktav tiz"],0,"Caesura müzikte kısa veya belirgin bir duraklama işaretidir."),
+C("Marcato ne demektir?","^",["Belirgin ve kuvvetli vurgula","Çok hafif çal","Yumuşak bağla"],0,"Marcato notayı belirgin ve vurgulu çalmaktır."),
+T("Notayı bir oktav tiz çalmayı anlatan işareti yaz.","8va",["8va"],"8va bir oktav tiz çalmayı anlatır."),
+T("Notayı bir oktav pes çalmayı anlatan işareti yaz.","8vb",["8vb"],"8vb bir oktav pes çalmayı anlatır."),
+T("Akor seslerini sırayla çalmaya ne ad verilir?","🎹",["arpej","arpeggio"],"Arpej, akor seslerini peş peşe çalmaktır."),
+T("İki komşu ses arasında hızlı gidip gelme süslemesinin adını yaz.","tr",["tril","trill"],"Tril, komşu sesler arasında hızlı süslemedir."),
+T("Bir müzik eserinde nefes alınacak yeri gösteren işaretin adını yaz.","‚",["nefes işareti","nefes"],"Nefes işareti şarkıcıya nefes alacağı yeri gösterir."),
+V("Hangi işaret bir oktav pes çalmayı anlatır?","İşareti seç",[{s:"8va",t:"Bir oktav tiz"},{s:"8vb",t:"Bir oktav pes"},{s:"tr",t:"Tril"}],1,"8vb, bir oktav pes çal demektir."),
+V("Hangi işaret nefes alınacak yeri gösterir?","İşareti seç",[{s:"‚",t:"Nefes"},{s:"𝄐",t:"Fermata"},{s:"𝄋",t:"Segno"}],0,"Nefes işareti şarkıcının nefes alacağı yeri gösterir."),
+V("Hangisi güçlü vurgu işaretidir?","İşareti seç",[{s:">",t:"Accent"},{s:"p",t:"Piano"},{s:"𝄽",t:"Sus"}],0,"Accent notaya vurgu yapar."),
+C("Bir nota hem staccato hem forte ise nasıl çalınır?","•  f",["Kısa ve güçlü","Uzun ve hafif","Bağlı ve yavaş"],0,"Staccato kısa, forte güçlü demektir. İkisi birlikte uygulanır."),
+C("Bir müzikte tempo ile dinamik arasındaki fark nedir?","🎼",["Tempo hız, dinamik ses şiddetidir","İkisi de nota süresidir","Tempo ses yüksekliği, dinamik tekrar"],0,"Tempo müziğin hızını; dinamik sesin şiddetini anlatır."),
+C("Fermata sus işaretinin üzerinde olursa ne yaparız?","𝄐",["Susu uzatırız","Ses çıkarırız","Hızlanırız"],0,"Fermata susun üzerinde de bulunabilir; sessizlik uzatılır."),
+C("D.C. al Fine ile D.S. al Fine arasındaki fark nedir?","Karşılaştır",["D.C. başa, D.S. Segno'ya döner","İkisi de Coda'ya gider","İkisi de hızlan demektir"],0,"D.C. başa, D.S. Segno işaretine döndürür; ikisi de Fine'da bitirebilir."),
+C("Bir 1 vuruşluk nota ve bir yarım vuruşluk nota toplam kaç vuruştur?","♩ + ♪",["1","1,5","2"],1,"1 + 0,5 = 1,5 vuruş."),
+C("İki noktalı dörtlük nota kaç vuruş eder?","♩..",["1,5","1,75","2"],1,"İlk nokta 0,5; ikinci nokta 0,25 ekler. Toplam 1,75 vuruş."),
+C("Bir 2 vuruşluk nota ile 1 vuruşluk sus toplam kaç vuruşluk zaman kaplar?","𝅗𝅥 + 𝄽",["2","3","4"],1,"2 vuruş nota + 1 vuruş sus = 3 vuruş."),]},
+{name:"Anahtarlar Dünyası",emoji:"🎼",desc:"Sol ve Fa anahtarları, porte çizgileri ve nota yerleri",qs:[
+// SOL ANAHTARI — 10 soru
+C("Bu işaretin adı nedir?","𝄞",["Sol anahtarı","Fa anahtarı","Do anahtarı"],0,"Bu işaret sol anahtarıdır. Porte üzerindeki Sol notasının yerini gösterir."),
+C("Sol anahtarı portenin hangi çizgisini merkez alır?","𝄞",["Birinci çizgi","İkinci çizgi","Üçüncü çizgi","Dördüncü çizgi"],1,"Sol anahtarının kıvrımı alttan ikinci çizgiyi sarar. Bu çizgi Sol notasının yeridir."),
+C("Sol anahtarında çizgiler alttan üste hangi sıradadır?","𝄞",["Mi–Sol–Si–Re–Fa","Fa–La–Do–Mi–Sol","Sol–Si–Re–Fa–La"],0,"Sol anahtarında çizgiler alttan üste Mi, Sol, Si, Re, Fa şeklindedir."),
+T("Sol anahtarında en alttaki çizginin notasını yaz.","𝄞",["mi"],"En alttaki çizgi Mi notasıdır."),
+T("Sol anahtarında en üst çizginin notasını yaz.","𝄞",["fa"],"En üst çizgi Fa notasıdır."),
+V("Hangi görsel sol anahtarını gösterir?","Anahtarı tanı",[{s:"𝄞",t:"Sol anahtarı"},{s:"𝄢",t:"Fa anahtarı"},{s:"♮",t:"Natürel"}],0,"𝄞 sol anahtarıdır."),
+V("Sol anahtarında boşlukların alttan üste doğru sırası hangisidir?","𝄞",[{s:"Fa–La–Do–Mi",t:"Boşlukların doğru sırası"},{s:"Mi–Sol–Si–Re",t:"Çizgilerin sırası"},{s:"Sol–Si–Re–Fa",t:"Çizgi notaları"}],0,"Sol anahtarında boşluklar alttan üste Fa, La, Do, Mi şeklindedir."),
+C("Sol anahtarında üçüncü çizgide hangi nota bulunur?","𝄞",["Sol","Si","Re","Fa"],1,"Üçüncü çizgi Si notasıdır."),
+T("Sol anahtarında en alttaki boşluğun notasını yaz.","𝄞",["fa"],"En alttaki boşluk Fa notasıdır."),
+C("Sol anahtarında ikinci çizgideki nota hangisidir?","𝄞",["Mi","Sol","Si","Re"],1,"Sol anahtarının ikinci çizgisi Sol notasını gösterir."),
+// FA ANAHTARI — 10 soru
+C("Bu işaretin adı nedir?","𝄢",["Sol anahtarı","Fa anahtarı","Do anahtarı"],1,"Bu işaret Fa anahtarıdır. Bas seslerin notalarını okumakta kullanılır."),
+C("Fa anahtarının iki noktası hangi çizgiyi çevreler?","𝄢",["İkinci çizgi","Üçüncü çizgi","Dördüncü çizgi","Beşinci çizgi"],2,"Fa anahtarının iki noktası alttan dördüncü çizgiyi çevreler. Bu çizgi Fa notasıdır."),
+C("Fa anahtarında çizgiler alttan üste hangi sıradadır?","𝄢",["Mi–Sol–Si–Re–Fa","Sol–Si–Re–Fa–La","Fa–La–Do–Mi–Sol"],1,"Fa anahtarında çizgiler alttan üste Sol, Si, Re, Fa, La şeklindedir."),
+T("Fa anahtarında en alttaki çizginin notasını yaz.","𝄢",["sol"],"Fa anahtarında en alttaki çizgi Sol notasıdır."),
+T("Fa anahtarında en üst çizginin notasını yaz.","𝄢",["la"],"Fa anahtarında en üst çizgi La notasıdır."),
+V("Hangi görsel Fa anahtarını gösterir?","Anahtarı tanı",[{s:"𝄞",t:"Sol anahtarı"},{s:"𝄢",t:"Fa anahtarı"},{s:"𝄐",t:"Fermata"}],1,"𝄢 Fa anahtarıdır; iki noktası Fa çizgisini işaretler."),
+V("Fa anahtarında boşlukların alttan üste doğru sırası hangisidir?","𝄢",[{s:"La–Do–Mi–Sol",t:"Boşlukların doğru sırası"},{s:"Sol–Si–Re–Fa",t:"Çizgilerin sırası"},{s:"Mi–Sol–Si–Re",t:"Karışık sıra"}],0,"Fa anahtarında boşluklar alttan üste La, Do, Mi, Sol şeklindedir."),
+C("Fa anahtarında üçüncü çizgide hangi nota bulunur?","𝄢",["Si","Re","Fa","La"],1,"Fa anahtarında üçüncü çizgi Re notasıdır."),
+T("Fa anahtarında en alttaki boşluğun notasını yaz.","𝄢",["la"],"En alttaki boşluk La notasıdır."),
+C("Fa anahtarının temel görevi hangisidir?","𝄢",["İnce sesleri göstermek için kullanılır","Daha pes sesleri okumayı kolaylaştırır","Nota süresini uzatır"],1,"Fa anahtarı bas ve daha pes seslerin notalarını okumayı kolaylaştırır.")
+]},
+
+{name:"Nota Ustalığı Büyük Finali",emoji:"🏆",desc:"4 aşama · 40 karma soru · büyük başarı sınavı",exam:true,qs:[
+C('Bir dörtlük nota kaç vuruş sürer?','♩',['1 vuruş', '2 vuruş', '3 vuruş', '4 vuruş'],0,'Dörtlük nota temel olarak 1 vuruş sürer.'),
+C('Bir ikilik nota kaç dörtlük nota değerindedir?','𝅗𝅥',['1', '2', '3', '4'],1,'İkilik nota iki dörtlük nota değerindedir.'),
+C('Bir birlik nota kaç vuruş sürer?','𝅝',['1', '2', '3', '4'],3,'Birlik nota 4 vuruş sürer.'),
+C('Sekizlik iki nota birlikte kaç vuruş eder?','♪ ♪',['1 vuruş', '2 vuruş', '3 vuruş', '4 vuruş'],0,'Her sekizlik nota yarım vuruştur; ikisi 1 vuruş eder.'),
+C('Dörtlük sus ne anlatır?','𝄽',['1 vuruş sessizlik', '2 vuruş ses', '4 vuruş ses', 'Yarım vuruş ses'],0,'Dörtlük sus, 1 vuruş boyunca sessiz kalınacağını gösterir.'),
+C('Nokta, notanın süresine ne kadar ekler?','♩.',['Sürenin tamamını', 'Yarısını', 'İki katını', 'Hiçbir şey'],1,'Nokta, notanın kendi değerinin yarısı kadar süre ekler.'),
+C('Aşağıdakilerden hangisi en kısa süreli notadır?','🎼',['Birlik', 'İkilik', 'Dörtlük', 'Onaltılık'],3,'Onaltılık nota, bu seçenekler arasında en kısa sürelidir.'),
+C('Bir ölçüde 4/4 ölçü sayısı kaç dörtlük vuruş içerir?','4/4',['2', '3', '4', '8'],2,'4/4 ölçüde bir ölçü dört dörtlük vuruş içerir.'),
+C('Uzatma bağı ne işe yarar?','⌒',['İki farklı sesi hızlandırır', 'Aynı yükseklikteki sesleri süre bakımından birleştirir', 'Sesi kısar', 'Ölçüyü değiştirir'],1,'Uzatma bağı aynı yükseklikteki notaları tek bir uzun ses gibi birleştirir.'),
+C('Dörtlük nota ile dörtlük sus toplam kaç vuruşluk zaman kaplar?','♩ + 𝄽',['1', '2', '3', '4'],1,'Bir vuruş ses ve bir vuruş sessizlik toplam iki vuruşluk zaman kaplar.'),
+C('Sol anahtarı hangi çizgiyi Sol olarak belirler?','𝄞',['1. çizgi', '2. çizgi', '3. çizgi', '4. çizgi'],1,'Sol anahtarının kıvrımı ikinci çizgiyi çevreler; bu çizgi Sol notasıdır.'),
+C('Fa anahtarının iki noktası hangi çizgiyi çevreler?','𝄢',['2. çizgi', '3. çizgi', '4. çizgi', '5. çizgi'],2,'Fa anahtarının iki noktası dördüncü çizgiyi çevreler.'),
+C('Porte kaç çizgiden oluşur?','🎼',['3', '4', '5', '6'],2,'Porte beş paralel çizgiden oluşur.'),
+C('Sol anahtarında çizgiler alttan üste hangi sıradadır?','𝄞',['Mi-Sol-Si-Re-Fa', 'Sol-Si-Re-Fa-La', 'Fa-La-Do-Mi-Sol'],0,'Sol anahtarında çizgiler Mi, Sol, Si, Re, Fa şeklindedir.'),
+C('Fa anahtarında en alttaki çizginin notası hangisidir?','𝄢',['Mi', 'Sol', 'Si', 'Re'],1,'Fa anahtarında en alt çizgi Sol notasıdır.'),
+C('Porte üzerinde notalar nerelere yazılabilir?','🎼',['Yalnız çizgilere', 'Yalnız boşluklara', 'Çizgilere ve boşluklara', 'Sadece porte dışına'],2,'Notalar hem çizgiler hem de aralarındaki boşluklar üzerine yazılır.'),
+C('Sol anahtarı genellikle hangi ses bölgesini okumakta kullanılır?','𝄞',['Daha ince sesleri', 'Yalnız çok pes sesleri', 'Ritimleri', 'Sessizlikleri'],0,'Sol anahtarı çoğunlukla orta ve ince seslerin yazımında kullanılır.'),
+C('Fa anahtarı genellikle hangi ses bölgesini okumayı kolaylaştırır?','𝄢',['Daha pes sesleri', 'Yalnız tiz sesleri', 'Sadece ritimleri', 'Gürlükleri'],0,'Fa anahtarı pes seslerin okunmasını kolaylaştırır.'),
+C('Do notasının hemen üstündeki doğal nota hangisidir?','🎹',['Si', 'Re', 'Mi', 'Fa'],1,'Do notasından sonra Re gelir.'),
+C('Müzikte temel nota adları hangi seçenekte doğru verilmiştir?','🎵',['Do-Re-Mi-Fa-Sol-La-Si', 'A-B-C-D-E-F-G-H', 'La-Si-Do-Re-Mi-Fa-Sol#'],0,'Temel nota adları Do, Re, Mi, Fa, Sol, La ve Si şeklindedir.'),
+C('P (piano) gürlük işareti ne demektir?','p',['Gür', 'Yumuşak/hafif', 'Çok hızlı', 'Kesik'],1,'Piano, müzikte hafif ve yumuşak çalınacağını belirtir.'),
+C('F (forte) ne demektir?','f',['Hafif', 'Yavaş', 'Gür', 'Bağlı'],2,'Forte, gür ve güçlü çalınacağını belirtir.'),
+C('Crescendo ne anlama gelir?','<',['Giderek gürleşmek', 'Giderek yavaşlamak', 'Giderek hafiflemek', 'Aniden susmak'],0,'Crescendo sesin giderek kuvvetlenmesidir.'),
+C('Diminuendo ne anlama gelir?','>',['Giderek hızlanmak', 'Giderek hafiflemek', 'Giderek gürleşmek', 'Tekrar etmek'],1,'Diminuendo sesin giderek hafiflemesidir.'),
+C('Allegro nasıl bir tempodur?','🏃',['Yavaş', 'Orta-yavaş', 'Hızlı ve canlı', 'Serbest ve ölçüsüz'],2,'Allegro hızlı ve canlı bir tempoyu anlatır.'),
+C('Adagio nasıl bir tempodur?','🐢',['Çok hızlı', 'Yavaş', 'Çok gür', 'Kesik'],1,'Adagio yavaş tempoda çalınacağını belirtir.'),
+C('Staccato nasıl çalınır?','•',['Sesleri kısa ve kesik', 'Sesleri birbirine bağlı', 'Giderek gür', 'Çok yavaş'],0,'Staccato notaların kısa ve birbirinden ayrılmış çalınmasıdır.'),
+C('Legato nasıl çalınır?','⌒',['Kesik kesik', 'Bağlı ve akıcı', 'Vurgulu ve sert', 'Sessiz'],1,'Legato seslerin birbirine bağlı ve akıcı çalınmasıdır.'),
+C('BPM neyi ifade eder?','♩ = 90',['Bir dakikadaki vuruş sayısını', 'Nota sayısını', 'Ses yüksekliğini', 'Ölçü çizgilerini'],0,'BPM, dakikadaki vuruş sayısını ifade eder.'),
+C('Metronomun temel görevi nedir?','⏱️',['Notaları isimlendirmek', 'Düzenli tempo/vuruş vermek', 'Sesleri kalınlaştırmak', 'Anahtar seçmek'],1,'Metronom düzenli vuruş vererek tempoyu korumaya yardımcı olur.'),
+C('♯ işareti notayı nasıl değiştirir?','♯',['Yarım ses inceltir', 'Yarım ses kalınlaştırır', 'Bir oktav indirir', 'Süreyi uzatır'],0,'Diyez, notayı yarım ses tizleştirir.'),
+C('♭ işareti notayı nasıl değiştirir?','♭',['Yarım ses inceltir', 'Yarım ses kalınlaştırır', 'Sesi iki katına çıkarır', 'Süreyi kısaltır'],1,'Bemol, notayı yarım ses pestleştirir.'),
+C('♮ işaretinin görevi nedir?','♮',['Diyez/bemol etkisini kaldırmak', 'Sesi uzatmak', 'Tempoyu hızlandırmak', 'Tekrar başlatmak'],0,'Natürel, ilgili notadaki önceki diyez veya bemol etkisini kaldırır.'),
+C('Ölçü çizgisi ne işe yarar?','│',['Ölçüleri birbirinden ayırır', 'Notayı uzatır', 'Sesi yükseltir', 'Tempoyu belirler'],0,'Ölçü çizgisi porte üzerinde ölçüleri birbirinden ayırır.'),
+C('Fermata işareti ne anlatır?','𝄐',['Sesi/ara vermeyi uzatmak', 'Çok hızlı çalmak', 'Kesik çalmak', 'Bir oktav yukarı çıkmak'],0,'Fermata, notanın veya susun süresini yorumcuya bağlı olarak uzatır.'),
+C('Tekrar işaretleri neyi gösterir?','𝄆 𝄇',['Bölümün tekrar çalınacağını', 'Eserin bittiğini', 'Sesi hafifletmeyi', 'Yeni anahtarı'],0,'Tekrar işaretleri, belirtilen bölümün yeniden çalınacağını gösterir.'),
+C('Arpej ne demektir?','🎹',['Akor seslerini aynı anda basmak', 'Akor seslerini sırayla çalmak', 'Çok hızlı susmak', 'Sadece tek nota çalmak'],1,'Arpejde akorun sesleri aynı anda değil, art arda çalınır.'),
+C('Akor nedir?','🎸',['Birden fazla sesin birlikte duyulması', 'Tek bir ritim vuruşu', 'Sessizlik işareti', 'Tempo ölçüsü'],0,'Akor, en az üç farklı sesin birlikte duyulmasıyla oluşabilir.'),
+C('Bir müzik eserinde giriş bölümü genellikle ne işe yarar?','🎶',['Eseri başlatır ve hazırlar', 'Eseri mutlaka bitirir', 'Bütün sesleri susturur', 'Ölçü sayısını siler'],0,'Giriş bölümü dinleyiciyi esere hazırlar ve müziğin başlangıcını oluşturur.'),
+C('Bir parçayı çalışırken zorlandığın ölçüyü yavaşlatıp tekrar etmek neden yararlıdır?','🔎',['Hataları fark edip doğru öğrenmek için', 'Daha çok hata yapmak için', 'Notaları değiştirmek için', 'Çalışmayı bırakmak için'],0,'Yavaş ve dikkatli tekrar, hataları duymayı ve doğru tekniği geliştirmeyi sağlar.')
+]}
+
+];
+let currentLang="tr";
+const translationCache={};
+const langNames={tr:"Türkçe",en:"English",ru:"Русский"};
+async function trText(value){
+ const text=String(value??""); if(currentLang==="tr"||!text.trim()) return text;
+ const key=currentLang+"|"+text; if(translationCache[key]) return translationCache[key];
+ try{
+  const url="https://translate.googleapis.com/translate_a/single?client=gtx&sl=tr&tl="+currentLang+"&dt=t&q="+encodeURIComponent(text);
+  const response=await fetch(url); if(!response.ok) throw new Error("translation unavailable");
+  const data=await response.json(); const translated=(data[0]||[]).map(x=>x[0]||"").join("")||text;
+  translationCache[key]=translated; try{localStorage.setItem("notaDedektifleriTranslations",JSON.stringify(translationCache))}catch(e){} return translated;
+ }catch(e){return text}
+}
+try{Object.assign(translationCache,JSON.parse(localStorage.getItem("notaDedektifleriTranslations")||"{}"))}catch(e){}
+const staticTextNodes=[];
+function collectStaticText(){const walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);let n;while(n=walker.nextNode()){if(n.parentElement.closest("script,style,select,option"))continue;if(n.nodeValue.trim())staticTextNodes.push({node:n,original:n.nodeValue})}}
+async function translateStatic(){for(const item of staticTextNodes){item.node.nodeValue=await trText(item.original)}}
+async function changeLanguage(lang){currentLang=lang;const status=$("translationStatus");status.textContent=lang==="tr"?"Dil seçimi: Türkçe":(lang==="en"?"Translating the complete game…":"Выполняется перевод всей игры…");await translateStatic();if($("game").style.display==="block"&&$("playArea").style.display!=="none")await loadQuestion();else await renderMap();status.textContent=lang==="tr"?"Dil seçimi: Türkçe":(lang==="en"?"English selected · All game content translated":"Выбран русский · Переведено всё содержимое игры");}
+
+// --- Cevap ses efektleri: doğru cevapta alkış, yanlış cevapta "Aaaa!" ---
+let notaAudioContext = null;
+function getNotaAudioContext(){
+  const AC = window.AudioContext || window.webkitAudioContext;
+  if(!AC) return null;
+  if(!notaAudioContext) notaAudioContext = new AC();
+  if(notaAudioContext.state === "suspended") notaAudioContext.resume();
+  return notaAudioContext;
+}
+function playCorrectSound(){
+  const ctx = getNotaAudioContext();
+  if(!ctx) return;
+  const now = ctx.currentTime;
+
+  // Doğru cevap için kısa, neşeli ve yumuşak bir başarı melodisi.
+  // Yükselen üç nota, son notada hafif bir parlama ile biter.
+  const notes = [
+    { frequency: 659.25, start: 0.00, duration: 0.18 },
+    { frequency: 783.99, start: 0.14, duration: 0.20 },
+    { frequency: 987.77, start: 0.30, duration: 0.34 }
+  ];
+
+  notes.forEach((note, index) => {
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    const overtone = ctx.createOscillator();
+    const overtoneGain = ctx.createGain();
+    const t = now + note.start;
+
+    osc.type = "sine";
+    osc.frequency.setValueAtTime(note.frequency, t);
+    overtone.type = "sine";
+    overtone.frequency.setValueAtTime(note.frequency * 2, t);
+
+    gain.gain.setValueAtTime(0.0001, t);
+    gain.gain.exponentialRampToValueAtTime(index === 2 ? 0.19 : 0.14, t + 0.018);
+    gain.gain.exponentialRampToValueAtTime(0.0001, t + note.duration);
+
+    overtoneGain.gain.setValueAtTime(0.0001, t);
+    overtoneGain.gain.exponentialRampToValueAtTime(0.035, t + 0.02);
+    overtoneGain.gain.exponentialRampToValueAtTime(0.0001, t + note.duration * 0.75);
+
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    overtone.connect(overtoneGain);
+    overtoneGain.connect(ctx.destination);
+
+    osc.start(t);
+    osc.stop(t + note.duration + 0.02);
+    overtone.start(t);
+    overtone.stop(t + note.duration * 0.8);
+  });
+}
+function playWrongSound(){
+  const ctx = getNotaAudioContext(); if(!ctx) return;
+  const now=ctx.currentTime;
+  // Komik, kısa "Aaaa!" ünlemini andıran sentetik ses
+  const osc=ctx.createOscillator(), gain=ctx.createGain(), filter=ctx.createBiquadFilter();
+  osc.type="sawtooth";
+  osc.frequency.setValueAtTime(390,now);
+  osc.frequency.exponentialRampToValueAtTime(245,now+0.62);
+  filter.type="lowpass"; filter.frequency.value=1050;
+  gain.gain.setValueAtTime(0.0001,now);
+  gain.gain.exponentialRampToValueAtTime(0.105,now+0.035);
+  gain.gain.setValueAtTime(0.085,now+0.28);
+  gain.gain.exponentialRampToValueAtTime(0.0001,now+0.68);
+  osc.connect(filter); filter.connect(gain); gain.connect(ctx.destination);
+  osc.start(now); osc.stop(now+0.7);
+}
+
+let score=0,lives=3,unlocked=1,completed=new Set(),worldIndex=0,qIndex=0,answered=false;
+let examAttempt=0,examCorrect=0,examWrong=0,examStageCorrect=0,examStageResults=[],examResults=[],examPassed=false,examAnswersRevealed=false,examBestNet=0;
+let examTimerInterval=null,examSecondsLeft=15,examWarningPlayed=false,examAdvanceTimeout=null;
+function stopExamTimer(){
+ if(examTimerInterval!==null){clearInterval(examTimerInterval);examTimerInterval=null}
+ if(examAdvanceTimeout!==null){clearTimeout(examAdvanceTimeout);examAdvanceTimeout=null}
+}
+function playTimerWarning(){
+ try{
+  const ctx=getNotaAudioContext(); if(!ctx)return;
+  const now=ctx.currentTime;
+  [0,0.18].forEach(offset=>{
+   const osc=ctx.createOscillator(),gain=ctx.createGain();
+   osc.type="sine";osc.frequency.setValueAtTime(880,now+offset);
+   gain.gain.setValueAtTime(0.0001,now+offset);
+   gain.gain.exponentialRampToValueAtTime(0.16,now+offset+0.015);
+   gain.gain.exponentialRampToValueAtTime(0.0001,now+offset+0.12);
+   osc.connect(gain);gain.connect(ctx.destination);
+   osc.start(now+offset);osc.stop(now+offset+0.13);
+  });
+ }catch(e){}
+}
+function startExamTimer(){
+ stopExamTimer(); examSecondsLeft=15; examWarningPlayed=false;
+ $("examTimer").style.display="block";
+ $("examTimerNumber").textContent="15";
+ $("examTimer").style.background="#eaf4ff";$("examTimer").style.borderColor="#739bdc";
+ examTimerInterval=setInterval(()=>{
+  if(answered){stopExamTimer();return}
+  examSecondsLeft--;
+  $("examTimerNumber").textContent=String(Math.max(0,examSecondsLeft));
+  if(examSecondsLeft===5&&!examWarningPlayed){examWarningPlayed=true;playTimerWarning();$("examTimer").style.background="#fff4d9";$("examTimer").style.borderColor="#e0a52e"}
+  if(examSecondsLeft<=0){
+   stopExamTimer();
+   markResult(false,"⏰ Süre doldu! Bu soru için puan kazanamadın.");
+   examAdvanceTimeout=setTimeout(()=>{if(worlds[worldIndex].exam&&answered)nextQuestion()},850);
+  }
+ },1000);
+}
+function toggleExamStart(){
+ const checked=$("examNoticeRead").checked;
+ const button=$("examStartButton");
+ button.disabled=!checked;
+ button.style.opacity=checked?"1":".5";
+ button.style.cursor=checked?"pointer":"not-allowed";
+}
+function beginExam(){
+ if(!$("examNoticeRead").checked)return;
+ $("examIntro").style.display="none";
+ startExamAttempt();
+}
+
+const $=id=>document.getElementById(id);
+async function trTextBack(value){const target=currentLang;currentLang="tr";const result=await (async()=>{try{const u="https://translate.googleapis.com/translate_a/single?client=gtx&sl="+target+"&tl=tr&dt=t&q="+encodeURIComponent(value);const r=await fetch(u);const d=await r.json();return(d[0]||[]).map(x=>x[0]||"").join("")||value}catch(e){return value}})();currentLang=target;return result}
+function norm(s){return String(s||"").toLocaleLowerCase("tr").normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[.,!?;:]/g," ").replace(/\s+/g," ").trim()}
+function updateStats(){$("score").textContent=score;$("lives").textContent=lives;$("badges").textContent=completed.size}
+async function renderMap(){$("menu").style.display="block";$("game").style.display="none";$("worlds").innerHTML="";
+for(let i=0;i<worlds.length;i++){const w=worlds[i];let b=document.createElement("button");b.className="world";b.disabled=i>=unlocked;const name=await trText(w.name),desc=await trText(w.desc),status=completed.has(i)?"🏅 "+await trText("Rozet kazanıldı"):i<unlocked?"▶ "+await trText("Oynamaya hazır"):"🔒 "+await trText("Kilitli");b.innerHTML=`<div class="emoji">${w.emoji}</div><strong>${i+1}. ${name}</strong><small>${desc}<br>${w.qs.length} ${await trText("soru · yazılı ve görsel sorular")}${w.exam?"<br>🎁 Finalde 350 puan: ücretsiz solfej dersi":""}</small><div class="tag">${status}</div>`;b.onclick=()=>startWorld(i);$("worlds").appendChild(b)}updateStats()}
+function startWorld(i){stopExamTimer();$("examStageContinue").style.display="none";worldIndex=i;qIndex=0;lives=3;answered=false;$("menu").style.display="none";$("game").style.display="block";$("finish").style.display="none";$("examIntro").style.display="none";$("examTimer").style.display="none";$("playArea").style.display="block";if(worlds[i].exam){examAttempt=0;examResults=[];examPassed=false;examAnswersRevealed=false;examBestNet=0;$("playArea").style.display="none";$("examIntro").style.display="block";$("examAnswerKey").style.display="none";return}loadQuestion()}
+
+function startExamAttempt(){
+  examAttempt++;
+  examCorrect=0; examWrong=0; examStageCorrect=0; examStageResults=[]; qIndex=0; answered=false;
+  $("finish").style.display="none"; $("playArea").style.display="block"; $("examStageContinue").style.display="none";
+  $("examAttemptInfo").textContent="Deneme "+examAttempt+" / 3";
+  loadQuestion();
+}
+function examNet(){return Math.max(0, examCorrect - examWrong/4);}
+function revealExamAnswers(){
+  examAnswersRevealed=true;
+  const box=$("examAnswerKey"); box.style.display="block"; box.innerHTML="";
+  const heading=document.createElement("h3"); heading.textContent="📚 Cevap anahtarı ve öğrenme notları"; box.appendChild(heading);
+  worlds[worldIndex].qs.forEach((q,i)=>{
+    const row=document.createElement("div"); row.className="answerkey-row";
+    const answer=q.options[q.correct];
+    row.innerHTML="<strong>"+(i+1)+". "+(i<10?"Aşama 1":i<20?"Aşama 2":i<30?"Aşama 3":"Aşama 4")+"</strong><div></div><small></small>";
+    row.children[1].textContent="Doğru cevap: "+answer;
+    row.children[2].textContent=q.explain;
+    box.appendChild(row);
+  });
+}
+
+async function loadQuestion(){let q=worlds[worldIndex].qs[qIndex];answered=false;
+if(worlds[worldIndex].exam){
+ const stage=Math.floor(qIndex/10)+1;
+ $("examStage").style.display="block";
+ $("examStage").textContent="Aşama "+stage+" / 4 · "+["Nota ve ritim","Anahtarlar ve nota okuma","Tempo ve müzikal ifadeler","Müzik işaretleri ve genel bilgiler"][stage-1]+" · "+(qIndex%10+1)+"/10";
+ $("examAttemptInfo").style.display="inline-block";
+ $("explain").textContent="🔍 Cevaplar sınav sırasında gösterilmez. Emin değilsen düşün, notlarını araştır ve en iyi cevabını seç.";
+ $("feedback").textContent="Cevabını seç. Doğru cevaplar deneme tamamlanana kadar gizlidir.";
+} else { $("examStage").style.display="none"; $("examAttemptInfo").style.display="none"; $("examAnswerKey").style.display="none"; }
+$("worldTitle").textContent=worlds[worldIndex].emoji+" "+await trText(worlds[worldIndex].name);$("qCount").textContent=worlds[worldIndex].exam?((qIndex%10+1)+" / 10"):((qIndex+1)+" / "+worlds[worldIndex].qs.length);$("bar").style.width=(qIndex/worlds[worldIndex].qs.length*100)+"%";$("question").textContent=await trText(q.prompt);$("symbol").textContent=q.symbol;$("feedback").textContent=await trText("Cevabını seç veya yaz!");$("feedback").style.background="#f2f0ff";$("explain").textContent="💡 "+await trText("İpucu: Soruyu dikkatlice oku.");$("next").style.display="none";$("answers").innerHTML="";$("note").textContent="";
+$("qType").textContent=q.type==="write"?"✍️ "+await trText("KENDİN YAZ"):q.type==="visual"?"🖼️ "+await trText("ŞEKLİ TANI"):"🎯 "+await trText("DOĞRU CEVABI SEÇ");
+if(q.type==="write"){$("answers").style.display="none";$("writebox").style.display="flex";$("typed").value="";$("typed").disabled=false;$("typed").placeholder=await trText("Cevabını buraya yaz...");$("typed").focus();$("note").textContent=await trText("Cevabını klavyeden yaz. Örnek: 2 vuruş, başa dön, kısa ve kesik...");$("typed").onkeydown=e=>{if(e.key==="Enter")submitTyped()};$("writebox").querySelector("button").textContent=await trText("Cevabı kontrol et")}
+else{$("writebox").style.display="none";$("answers").style.display="grid";for(let j=0;j<q.options.length;j++){let opt=q.options[j],b=document.createElement("button");b.className="answer";if(q.type==="visual")b.innerHTML=`<span class="shape">${opt.s}</span><span class="sub">${await trText(opt.t)}</span>`;else b.textContent=await trText(opt);b.onclick=()=>choose(j,b);$("answers").appendChild(b)}}if(worlds[worldIndex].exam)startExamTimer();}
+async function markResult(ok,message){if(answered)return;answered=true;if(worlds[worldIndex].exam)stopExamTimer();try{if(ok)playCorrectSound();else playWrongSound()}catch(e){}
+if(worlds[worldIndex].exam){
+ if(ok){examCorrect++;examStageCorrect++;}else examWrong++;
+ $("feedback").textContent=ok?"✓ Cevabın kaydedildi.":"Cevabın kaydedildi. Sonucu deneme sonunda göreceksin.";
+ $("feedback").style.background=ok?"#e9fff7":"#f2f0ff";
+ $("explain").textContent="🔎 Doğru cevabı hemen göstermiyoruz. Deneme bitince sonucunu görecek, cevap anahtarı açıldığında açıklamaları inceleyebileceksin.";
+} else {
+ if(ok){score+=10;$("feedback").textContent="🎉 "+await trText("Harika! Doğru cevap. +10 puan");$("feedback").style.background="#e9fff7"}
+ else{lives--;$("feedback").textContent=message||("🌱 "+await trText("Bu kez olmadı. Açıklamayı oku, öğrenmeye devam et."));$("feedback").style.background="#fff0f3"}
+ $("explain").textContent="📘 "+await trText(worlds[worldIndex].qs[qIndex].explain);
+}
+$("next").style.display="inline-block";$("next").textContent=qIndex===worlds[worldIndex].qs.length-1?await trText("Denemeyi tamamla 🏁"):await trText("Sonraki soru →");updateStats()}
+async function choose(j,btn){if(answered)return;let q=worlds[worldIndex].qs[qIndex],buttons=[...$("answers").children];buttons.forEach((b)=>{b.disabled=true});let ok=j===q.correct;if(!worlds[worldIndex].exam){buttons.forEach((b,k)=>{if(k===q.correct)b.classList.add("correct")});if(!ok)btn.classList.add("wrong")}await markResult(ok,ok?"":"🌱 "+await trText("Bir sonraki soruda tekrar dene!"))}
+async function submitTyped(){if(answered)return;let q=worlds[worldIndex].qs[qIndex],v=norm($("typed").value);if(!v){$("feedback").textContent=await trText("Önce cevabını yazmalısın 🙂");return}let translatedInput=v;if(currentLang!=="tr")translatedInput=norm(await trTextBack($("typed").value));let ok=q.aliases.some(a=>{let na=norm(a);return translatedInput===na||((na.length>=7||translatedInput.length>=7)&&(translatedInput.includes(na)||na.includes(translatedInput))) });
+$("typed").disabled=true;await markResult(ok,ok?"":"🌱 "+await trText("Cevabını aldım. Bu soruda beklenen cevap: ")+await trText(q.aliases[0])+". "+await trText("Açıklamayı okuyup öğrenebilirsin."))}
+async function nextQuestion(){
+ if(worlds[worldIndex].exam && qIndex%10===9 && qIndex<39){
+  stopExamTimer();
+  const stage=Math.floor(qIndex/10)+1;
+  const stagePoints=examStageCorrect*10;
+  examStageResults.push({stage,correct:examStageCorrect,points:stagePoints});
+  $("examTimer").style.display="none";
+  $("playArea").style.display="none";
+  $("finish").style.display="block";
+  $("examStageContinue").style.display="inline-block";
+  $("examRetry").style.display="none";
+  $("examStudyRetry").style.display="none";
+  $("examAnswerKey").style.display="none";
+  $("finishTitle").textContent="📊 "+stage+". BÖLÜM TAMAMLANDI";
+  $("finishText").textContent="Bu bölümde "+examStageCorrect+"/10 doğru cevap verdin ve "+stagePoints+"/100 puan aldın. Şu ana kadarki toplam puanın: "+(examCorrect*10)+"/400. Hazırsan sonraki 10 soruluk bölüme geçebilirsin.";
+  $("examStageContinue").textContent=stage===3?"4. bölüme geç →":"Sonraki bölüme geç →";
+  $("bar").style.width=((qIndex+1)/40*100)+"%";
+  examStageCorrect=0;
+  return;
+ }
+ if(qIndex<worlds[worldIndex].qs.length-1){qIndex++;await loadQuestion();return}
+ if(worlds[worldIndex].exam){
+  const points=examCorrect*10;
+  const passed=points>=350;
+  examResults.push({attempt:examAttempt,correct:examCorrect,wrong:examWrong,points});
+  examBestNet=Math.max(examBestNet,points);
+  if(passed){examPassed=true;completed.add(worldIndex);unlocked=worlds.length;revealExamAnswers();}
+  else if(examAttempt>=3){revealExamAnswers();}
+  stopExamTimer();$("examTimer").style.display="none";$("playArea").style.display="none";$("finish").style.display="block";$("bar").style.width="100%";
+  $("examStageContinue").style.display="none";
+  $("finishTitle").textContent=points===400?"🌟 MÜKEMMEL! 400 TAM PUAN!":passed?"🏆 TEBRİKLER! ÖDÜL KAZANDIN!":"Deneme tamamlandı";
+  let rewardText=points===400
+   ?"20 dakikalık ücretsiz solfej ve nota okuma dersine ek olarak kendi müzik aletinde 1 ücretsiz ders kazandın!"
+   :passed
+   ?"20 dakikalık ücretsiz solfej ve nota okuma dersi kazandın!"
+   :"350 puan barajına ulaşamadın. "+(examAttempt<3?"Kalan deneme hakkını kullanabilir, sonraki denemede yeniden deneyebilirsin.":"Üç deneme tamamlandı. Cevap anahtarı açıldı; açıklamaları inceleyip çalıştıktan sonra yeniden deneyebilirsin.");
+  $("finishText").textContent="Deneme "+examAttempt+" / 3 · Doğru: "+examCorrect+" · Yanlış/boş: "+(40-examCorrect)+" · Toplam puan: "+points+"/400. "+rewardText;
+  $("examRetry").style.display=(!passed && examAttempt<3)?"inline-block":"none";
+  $("examStudyRetry").style.display=(!passed && examAttempt>=3)?"inline-block":"none";
+  $("examAnswerKey").style.display=examAnswersRevealed?"block":"none";
+  $("examAttemptInfo").style.display="none";
+  return;
+ }
+ completed.add(worldIndex);unlocked=Math.max(unlocked,Math.min(worlds.length,worldIndex+2));updateStats();$("playArea").style.display="none";$("finish").style.display="block";$("bar").style.width="100%";$("finishTitle").textContent="🏅 "+await trText(worlds[worldIndex].name+" tamamlandı!");$("finishText").textContent=await trText(worlds[worldIndex].qs.length+" soruluk dünyayı bitirdin. Toplam puanın: "+score+". "+(completed.size===worlds.length?"Tebrikler! Nota Ustası oldun!":"Yeni dünya açıldı. Maceraya devam et!"))
+}
+function continueExamStage(){
+ $("examStageContinue").style.display="none";
+ $("finish").style.display="none";
+ $("playArea").style.display="block";
+ qIndex++;
+ loadQuestion();
+}
+
+function backToMap(){stopExamTimer();$("examTimer").style.display="none";$("examIntro").style.display="none";renderMap()}
+collectStaticText();renderMap();
+</script></body></html>
