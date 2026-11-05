@@ -33,9 +33,62 @@ h2{margin:0 0 10px;color:#3b4077}.worlds{display:grid;grid-template-columns:repe
 .note{font-size:13px;color:#6c7190;text-align:center;margin-top:10px}
 footer{text-align:center;color:#69708e;font-size:13px;margin:18px}
 @media(max-width:540px){.panel{padding:14px}.symbol{font-size:64px}.writebox{flex-direction:column}.writebox input{width:100%}}
-.answerkey-row{padding:10px 12px;margin:8px 0;border:1px solid #e5e2f3;border-radius:12px;background:#fff}.answerkey-row small{display:block;color:#626985;margin-top:4px;line-height:1.4}\n</style></head>
+.answerkey-row{padding:10px 12px;margin:8px 0;border:1px solid #e5e2f3;border-radius:12px;background:#fff}.answerkey-row small{display:block;color:#626985;margin-top:4px;line-height:1.4}\n
+#welcomeIntro{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;padding:18px;background:linear-gradient(135deg,rgba(239,248,255,.98),rgba(255,250,231,.98));}
+.welcome-card{width:min(760px,100%);max-height:94vh;overflow:auto;background:#fff;border:2px solid #d8e8fb;border-radius:24px;padding:clamp(18px,4vw,32px);box-shadow:0 18px 55px rgba(40,70,120,.16);text-align:center;color:#28345b}
+.welcome-card h2{font-size:clamp(23px,4vw,32px);margin:5px 0 8px;color:#344b91}
+.welcome-card .welcome-lead{font-size:16px;line-height:1.55;margin:8px auto 16px;max-width:650px}
+.welcome-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;text-align:left}
+.welcome-item{background:#f4f8ff;border:1px solid #e0eafa;border-radius:14px;padding:12px 14px;font-size:14px;line-height:1.48}
+.welcome-item strong{display:block;color:#304b91;margin-bottom:3px}
+.welcome-reward{background:#fff8e4;border-color:#f0dfae}
+.welcome-count{margin:17px auto 0;max-width:340px;color:#637095;font-size:13px;font-weight:800}
+.welcome-track{height:7px;background:#e9eef8;border-radius:20px;overflow:hidden;margin-top:7px}
+#welcomeProgress{height:100%;width:0;background:linear-gradient(90deg,#69b9ec,#8c7be8);border-radius:20px}
+ .welcome-bilingual{display:grid;grid-template-columns:1fr 1fr;gap:12px;text-align:left;align-items:start}
+.welcome-language{min-width:0;padding:10px;border:1px solid #e1eaf6;border-radius:16px;background:#fbfdff}
+.welcome-language h3{text-align:center;margin:2px 0 8px;color:#344b91;font-size:15px}
+.welcome-language .welcome-lead{font-size:12px;line-height:1.38;margin:6px 2px 9px}
+.welcome-language .welcome-grid{grid-template-columns:1fr;gap:7px}
+.welcome-language .welcome-item{font-size:11.5px;line-height:1.35;padding:8px 9px;border-radius:10px}
+.welcome-language .welcome-item strong{margin-bottom:2px}
+@media(max-width:560px){.welcome-bilingual{grid-template-columns:1fr 1fr;gap:6px}.welcome-card{padding:9px;max-height:96vh}.welcome-language{padding:6px}.welcome-language h3{font-size:12px}.welcome-language .welcome-lead{font-size:10px;line-height:1.25}.welcome-language .welcome-item{font-size:9.5px;line-height:1.25;padding:6px}.welcome-language .welcome-item strong{font-size:9.5px}.welcome-count{font-size:10px;margin-top:8px}}
+</style></head>
 <body>
-<header><div class="langbar"><label for="languageSelect">🌐 Dil / Language / Язык</label><select id="languageSelect" onchange="changeLanguage(this.value)"><option value="tr">🇹🇷 Türkçe</option><option value="en">🇬🇧 English</option><option value="ru">🇷🇺 Русский</option></select></div><h1>🎼 NOTA DEDEKTİFLERİ </h1><p>🏰 Müzik Krallığının Sırları · RockJazz Müzik Eğitimi</p><div id="translationStatus" class="langstatus">Dil seçimi: Türkçe</div></header>
+
+<div id="welcomeIntro" role="dialog" aria-modal="true" aria-labelledby="welcomeTitle">
+ <div class="welcome-card">
+  <div style="font-size:40px;line-height:1.05">🎼 🔎 🎵</div>
+  <h2 id="welcomeTitle">NOTA DEDEKTİFLERİNE HOŞ GELDİN! · ДОБРО ПОЖАЛОВАТЬ В «НОТА-ДЕТЕКТИВЫ»!</h2>
+  <div class="welcome-bilingual">
+   <section class="welcome-language" lang="tr">
+    <h3>🇹🇷 TÜRKÇE</h3>
+    <p class="welcome-lead">Müzik Krallığı’nın sırlarını çözmeye hazır mısın? 9 bölüm boyunca notaları, ritimleri ve müzik işaretlerini keşfedeceksin. Her bölümü tamamladığında rozet kazanır, yeni bölümün kilidini açarsın. Soruları dikkatle oku; bazılarını seçerek, bazılarını yazarak, bazılarını da görsellere bakarak cevaplayacaksın.</p>
+    <div class="welcome-grid">
+     <div class="welcome-item"><strong>🗺️ İlk 8 bölüm</strong>Her bölümde 20 soru var. Bölümleri sırayla tamamla; doğru cevaplarınla puan topla ve rozetlerini biriktir.</div>
+     <div class="welcome-item welcome-reward"><strong>🏆 9. BÖLÜM: NOTA USTALIĞI FİNALİ</strong>Final 40 sorudan oluşur: 4 aşama, her aşamada 10 soru. Her soru için 15 saniyen var; son 5 saniyede sesli uyarı gelir.</div>
+     <div class="welcome-item welcome-reward"><strong>🎁 ÖDÜLLER YALNIZCA 9. BÖLÜM FİNALİNDE!</strong>İlk 8 bölümde ödül yoktur. Finaldeki ilk 3 denemenden birinde 350–399 puan alırsan ücretsiz 20 dakikalık solfej ve nota okuma dersi kazanırsın. 400 tam puanda buna ek olarak kendi enstrümanında 1 ücretsiz ders kazanırsın!</div>
+     <div class="welcome-item"><strong>📌 ÖNEMLİ KURALLAR</strong>Finalde toplam 3 deneme hakkın var. Üç denemeden sonra cevap anahtarı ve açıklamalar açılır. Oyun sırasında doğru cevaplar gösterilmez. Dikkatini topla ve elinden gelenin en iyisini yap!</div>
+    </div>
+   </section>
+   <section class="welcome-language" lang="ru">
+    <h3>🇷🇺 РУССКИЙ</h3>
+    <p class="welcome-lead">Готов(а) раскрыть тайны Музыкального королевства? В 9 разделах ты познакомишься с нотами, ритмами и музыкальными знаками. Завершай разделы, получай значки и открывай следующие. Внимательно читай вопросы: на некоторые нужно выбрать ответ, на другие — написать его или определить по картинке.</p>
+    <div class="welcome-grid">
+     <div class="welcome-item"><strong>🗺️ Первые 8 разделов</strong>В каждом разделе 20 вопросов. Проходи их по порядку, набирай баллы за правильные ответы и собирай значки.</div>
+     <div class="welcome-item welcome-reward"><strong>🏆 РАЗДЕЛ 9: ФИНАЛ «МАСТЕР НОТ»</strong>В финале 40 вопросов: 4 этапа по 10 вопросов. На каждый вопрос даётся 15 секунд; за 5 секунд до конца прозвучит предупреждающий сигнал.</div>
+     <div class="welcome-item welcome-reward"><strong>🎁 НАГРАДЫ ТОЛЬКО В ФИНАЛЕ 9-ГО РАЗДЕЛА!</strong>В первых 8 разделах наград нет. Если в одной из первых 3 попыток финала ты наберёшь 350–399 баллов, получишь бесплатное 20-минутное занятие по сольфеджио и чтению нот. За 400 баллов — дополнительно одно бесплатное занятие на твоём музыкальном инструменте!</div>
+     <div class="welcome-item"><strong>📌 ВАЖНЫЕ ПРАВИЛА</strong>В финале предусмотрено всего 3 попытки. После трёх попыток откроются правильные ответы и пояснения. Во время игры правильные ответы не показываются. Сосредоточься и постарайся набрать как можно больше баллов!</div>
+    </div>
+   </section>
+  </div>
+  <div class="welcome-count">Macera birazdan başlayacak… · Приключение скоро начнётся… <span id="welcomeSeconds">18</span> saniye · секунд
+   <div class="welcome-track"><div id="welcomeProgress"></div></div>
+  </div>
+ </div>
+</div>
+
+<header><div class="langbar"><label for="languageSelect">🌐 Dil / Language / Язык</label><select id="languageSelect" onchange="changeLanguage(this.value)"><option value="tr">🇹🇷 Türkçe</option><option value="en">🇬🇧 English</option><option value="ru">🇷🇺 Русский</option></select></div><h1>🎼 NOTA DEDEKTİFLERİ</h1><p>🏰 Müzik Krallığının Sırları · RockJazz Müzik Eğitimi</p><div id="translationStatus" class="langstatus">Dil seçimi: Türkçe</div></header>
 <div class="wrap">
 <div class="stats"><div class="stat">⭐ Puan: <span id="score">0</span></div><div class="stat">❤️ Can: <span id="lives">3</span></div><div class="stat">🏅 Rozet: <span id="badges">0</span>/7</div></div>
 <section id="menu" class="panel"><h2>Macera haritan hazır, dedektif!</h2><p>Her dünyada farklı sayıda soru var. Bazılarında cevabı kendin yazacak, bazılarında şekilleri tanıyacak, bazılarında doğru seçeneği bulacaksın.</p><div class="worlds" id="worlds"></div><div class="lesson"><b>Oyun kuralı:</b> Her doğru cevap 10 puan. Yazılı sorularda cevabını kendi cümlenle verebilirsin. Yazım farklılıkları sorun değildir. Bir dünyayı tamamlayınca sonraki dünya açılır.</div></section>
@@ -548,4 +601,13 @@ function continueExamStage(){
 
 function backToMap(){stopExamTimer();$("examTimer").style.display="none";$("examIntro").style.display="none";renderMap()}
 collectStaticText();renderMap();
+(function showWelcomeIntro(){
+ const overlay=$("welcomeIntro"), secondsLabel=$("welcomeSeconds"), progress=$("welcomeProgress");
+ let remaining=18; secondsLabel.textContent=remaining;
+ const tick=setInterval(()=>{
+  remaining--; secondsLabel.textContent=Math.max(0,remaining);
+  progress.style.width=((18-remaining)/18*100)+"%";
+  if(remaining<=0){clearInterval(tick);overlay.style.opacity="0";overlay.style.transition="opacity .45s ease";setTimeout(()=>overlay.remove(),460);}
+ },1000);
+})();
 </script></body></html>
