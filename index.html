@@ -39,7 +39,7 @@ html,body{min-height:100%;margin:0}
 #welcomeIntro{position:fixed!important;top:0!important;right:0!important;bottom:0!important;left:0!important;width:100vw!important;height:100vh!important;height:100dvh!important;box-sizing:border-box!important;z-index:2147483647!important;display:flex!important;align-items:center!important;justify-content:center!important;padding:clamp(12px,2.5vw,30px)!important;background:linear-gradient(135deg,#edf5ff 0%,#f7efff 52%,#fff4e8 100%)!important;overflow:auto!important;}
 body.welcome-active> :not(#welcomeIntro){visibility:hidden!important}
 .welcome-card{width:min(1120px,96vw);max-height:92vh;max-height:92dvh;overflow:auto;box-sizing:border-box;background:#fff;border:2px solid #d8e8fb;border-radius:24px;padding:clamp(18px,2.5vw,30px);box-shadow:0 18px 55px rgba(40,70,120,.16);text-align:center;color:#28345b}
-.welcome-card h2{font-size:clamp(23px,4vw,32px);margin:5px 0 8px;color:#344b91}
+.welcome-close{position:absolute;top:clamp(10px,2vw,22px);right:clamp(10px,2vw,22px);width:36px;height:36px;border:0;border-radius:50%;background:#edf2fb;color:#344b91;font-size:24px;font-weight:900;cursor:pointer;z-index:2}.welcome-card{position:relative}.welcome-card h2{font-size:clamp(23px,4vw,32px);margin:5px 0 8px;color:#344b91}
 .welcome-card .welcome-lead{font-size:16px;line-height:1.55;margin:8px auto 16px;max-width:650px}
 .welcome-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;text-align:left}
 .welcome-item{background:#f4f8ff;border:1px solid #e0eafa;border-radius:14px;padding:12px 14px;font-size:14px;line-height:1.48}
@@ -61,6 +61,7 @@ body.welcome-active> :not(#welcomeIntro){visibility:hidden!important}
 
 <div id="welcomeIntro" role="dialog" aria-modal="true" aria-labelledby="welcomeTitle">
  <div class="welcome-card">
+  <button class="welcome-close" type="button" aria-label="Bilgilendirmeyi kapat" title="Bilgilendirmeyi kapat" onclick="closeWelcomeIntro()">×</button>
   <div style="font-size:40px;line-height:1.05">🎼 🔎 🎵</div>
   <h2 id="welcomeTitle">NOTA DEDEKTİFLERİNE HOŞ GELDİN! · ДОБРО ПОЖАЛОВАТЬ В «НОТА-ДЕТЕКТИВЫ»!</h2>
   <div class="welcome-bilingual">
@@ -126,7 +127,7 @@ body.welcome-active> :not(#welcomeIntro){visibility:hidden!important}
 </div>
 <div class="progress"><div class="bar" id="bar"></div></div>
 <div id="playArea"><div class="type" id="qType">ÇOKTAN SEÇMELİ</div><div class="question" id="question"></div><div class="symbol" id="symbol"></div><div class="answers" id="answers"></div><div class="writebox" id="writebox" style="display:none"><input id="typed" autocomplete="off" placeholder="Cevabını buraya yaz..."><button class="mainbtn" onclick="submitTyped()">Cevabı kontrol et</button></div><div class="note" id="note"></div><div class="feedback" id="feedback">Cevabını seç veya yaz!</div><div class="lesson" id="explain">💡 İpucu burada görünecek.</div><div class="actions"><button class="mainbtn" id="next" onclick="nextQuestion()" style="display:none">Sonraki soru →</button></div></div>
-<div id="finish"><div class="big">🏆</div><h2 id="finishTitle">Harika iş çıkardın!</h2><p id="finishText"></p><button id="examStageContinue" class="mainbtn" style="display:none" onclick="continueExamStage()">Sonraki bölüme geç →</button><button id="examRetry" class="mainbtn" style="display:none" onclick="startExamAttempt()">Sonraki denemeye geç</button><button id="examStudyRetry" class="mainbtn" style="display:none" onclick="startExamAttempt()">Cevapları çalıştım, yeniden dene</button><div id="examAnswerKey" style="display:none;text-align:left;margin-top:18px"></div><button class="mainbtn" onclick="backToMap()">Haritaya dön</button></div>
+<div id="finish"><div class="big">🏆</div><h2 id="finishTitle">Harika iş çıkardın!</h2><p id="finishText"></p><button id="examStageContinue" class="mainbtn" style="display:none" onclick="continueExamStage()">Sonraki bölüme geç →</button><button id="examRetry" class="mainbtn" style="display:none" onclick="startExamAttempt()">Sonraki denemeye geç</button><button id="examStudyRetry" class="mainbtn" style="display:none" onclick="startExamAttempt()">Cevapları çalıştım, yeniden dene</button><button id="retryWorld" class="mainbtn" style="display:none" onclick="retryCurrentWorld()">Bu bölümü yeniden dene 🔄</button><div id="examAnswerKey" style="display:none;text-align:left;margin-top:18px"></div><button class="mainbtn" onclick="backToMap()">Haritaya dön</button></div>
 </section><footer>🎵 Öğren, dene, keşfet! · Nota Dedektifleri</footer></div>
 <script>
 const Q=(type,prompt,symbol,options,correct,explain,aliases=[])=>({type,prompt,symbol,options,correct,explain,aliases});
@@ -501,7 +502,8 @@ function norm(s){return String(s||"").toLocaleLowerCase("tr").normalize("NFD").r
 function updateStats(){$("score").textContent=score;$("lives").textContent=lives;$("badges").textContent=completed.size;updateBonusBadge()}
 async function renderMap(){$("menu").style.display="block";$("game").style.display="none";$("worlds").innerHTML="";
 for(let i=0;i<worlds.length;i++){const w=worlds[i];let b=document.createElement("button");b.className="world";b.disabled=i>=unlocked;const name=await trText(w.name),desc=await trText(w.desc),status=completed.has(i)?"🏅 "+await trText("Rozet kazanıldı"):i<unlocked?"▶ "+await trText("Oynamaya hazır"):"🔒 "+await trText("Kilitli");b.innerHTML=`<div class="emoji">${w.emoji}</div><strong>${i+1}. ${name}</strong><small>${desc}<br>${w.qs.length} ${await trText("soru · yazılı ve görsel sorular")}${w.exam?"<br>🎁 Finalde 350 puan: ücretsiz solfej dersi":""}</small><div class="tag">${status}</div>`;b.onclick=()=>startWorld(i);$("worlds").appendChild(b)}updateStats()}
-function startWorld(i){stopExamTimer();$("examStageContinue").style.display="none";worldIndex=i;qIndex=0;worldHadMistake=false;shuffleQuestions(worlds[i].qs);lives=3+(pendingBonusLife?1:0);pendingBonusLife=false;answered=false;updateStats();$("menu").style.display="none";$("game").style.display="block";$("finish").style.display="none";$("examIntro").style.display="none";$("examTimer").style.display="none";$("playArea").style.display="block";if(worlds[i].exam){examAttempt=0;examResults=[];examPassed=false;examAnswersRevealed=false;examBestNet=0;$("playArea").style.display="none";$("examIntro").style.display="block";$("examAnswerKey").style.display="none";return}loadQuestion()}
+function retryCurrentWorld(){startWorld(worldIndex)}
+function startWorld(i){stopExamTimer();$("retryWorld").style.display="none";$("examStageContinue").style.display="none";worldIndex=i;qIndex=0;worldHadMistake=false;shuffleQuestions(worlds[i].qs);lives=3+(pendingBonusLife?1:0);pendingBonusLife=false;answered=false;updateStats();$("menu").style.display="none";$("game").style.display="block";$("finish").style.display="none";$("examIntro").style.display="none";$("examTimer").style.display="none";$("playArea").style.display="block";if(worlds[i].exam){examAttempt=0;examResults=[];examPassed=false;examAnswersRevealed=false;examBestNet=0;$("playArea").style.display="none";$("examIntro").style.display="block";$("examAnswerKey").style.display="none";return}loadQuestion()}
 
 function startExamAttempt(){
   examAttempt++;
@@ -596,6 +598,14 @@ async function nextQuestion(){
   $("examAttemptInfo").style.display="none";
   return;
  }
+ if(lives<=0){
+  updateStats();$("playArea").style.display="none";$("finish").style.display="block";$("bar").style.width="100%";
+  $("finishTitle").textContent="❤️ Canların tükendi! Bu bölümü yeniden denemelisin.";
+  $("finishText").textContent="Bölümü sonuna kadar tamamladın; ancak 3 canını da kaybettiğin için sonraki bölümün kilidi açılmadı. Bir bölümü geçebilmek için can sayın sıfırın altına düşmemeli; en az 1 canın kalmalı. Soruları tekrar çalış, öğrendiklerini pekiştir ve bu bölümü yeniden dene. Başarabilirsin!";
+  $("retryWorld").style.display="inline-block";
+  $("examStageContinue").style.display="none";$("examRetry").style.display="none";$("examStudyRetry").style.display="none";
+  return;
+ }
  completed.add(worldIndex);unlocked=Math.max(unlocked,Math.min(worlds.length,worldIndex+2));
  completedInPair++;if(!worldHadMistake)perfectInPair++;
  let bonusAwarded=false;if(completedInPair>=2){if(perfectInPair===2){pendingBonusLife=true;bonusAwarded=true;}completedInPair=0;perfectInPair=0;}
@@ -611,13 +621,15 @@ function continueExamStage(){
 
 function backToMap(){stopExamTimer();$("examTimer").style.display="none";$("examIntro").style.display="none";renderMap()}
 collectStaticText();renderMap();
+let welcomeTimer=null;
+function closeWelcomeIntro(){if(welcomeTimer)clearInterval(welcomeTimer);const overlay=$("welcomeIntro");if(overlay)overlay.remove();document.body.classList.remove("welcome-active")}
 (function showWelcomeIntro(){
  const overlay=$("welcomeIntro"), secondsLabel=$("welcomeSeconds"), progress=$("welcomeProgress");
  let remaining=18; secondsLabel.textContent=remaining;
- const tick=setInterval(()=>{
+ welcomeTimer=setInterval(()=>{
   remaining--; secondsLabel.textContent=Math.max(0,remaining);
   progress.style.width=((18-remaining)/18*100)+"%";
-  if(remaining<=0){clearInterval(tick);overlay.style.opacity="0";overlay.style.transition="opacity .45s ease";setTimeout(()=>{overlay.remove();document.body.classList.remove("welcome-active");},460);}
+  if(remaining<=0){clearInterval(welcomeTimer);overlay.style.opacity="0";overlay.style.transition="opacity .45s ease";setTimeout(()=>{overlay.remove();document.body.classList.remove("welcome-active");},460);}
  },1000);
 })();
 </script></body></html>
