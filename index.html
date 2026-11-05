@@ -34,8 +34,11 @@ h2{margin:0 0 10px;color:#3b4077}.worlds{display:grid;grid-template-columns:repe
 footer{text-align:center;color:#69708e;font-size:13px;margin:18px}
 @media(max-width:540px){.panel{padding:14px}.symbol{font-size:64px}.writebox{flex-direction:column}.writebox input{width:100%}}
 .answerkey-row{padding:10px 12px;margin:8px 0;border:1px solid #e5e2f3;border-radius:12px;background:#fff}.answerkey-row small{display:block;color:#626985;margin-top:4px;line-height:1.4}\n
-#welcomeIntro{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;padding:18px;background:linear-gradient(135deg,rgba(239,248,255,.98),rgba(255,250,231,.98));}
-.welcome-card{width:min(760px,100%);max-height:94vh;overflow:auto;background:#fff;border:2px solid #d8e8fb;border-radius:24px;padding:clamp(18px,4vw,32px);box-shadow:0 18px 55px rgba(40,70,120,.16);text-align:center;color:#28345b}
+/* Başlangıç bilgilendirmesi: tüm ekranı kaplar; oyun sayfası süre bitene kadar görünmez. */
+html,body{min-height:100%;margin:0}
+#welcomeIntro{position:fixed!important;top:0!important;right:0!important;bottom:0!important;left:0!important;width:100vw!important;height:100vh!important;height:100dvh!important;box-sizing:border-box!important;z-index:2147483647!important;display:flex!important;align-items:center!important;justify-content:center!important;padding:clamp(12px,2.5vw,30px)!important;background:linear-gradient(135deg,#edf5ff 0%,#f7efff 52%,#fff4e8 100%)!important;overflow:auto!important;}
+body.welcome-active> :not(#welcomeIntro){visibility:hidden!important}
+.welcome-card{width:min(1120px,96vw);max-height:92vh;max-height:92dvh;overflow:auto;box-sizing:border-box;background:#fff;border:2px solid #d8e8fb;border-radius:24px;padding:clamp(18px,2.5vw,30px);box-shadow:0 18px 55px rgba(40,70,120,.16);text-align:center;color:#28345b}
 .welcome-card h2{font-size:clamp(23px,4vw,32px);margin:5px 0 8px;color:#344b91}
 .welcome-card .welcome-lead{font-size:16px;line-height:1.55;margin:8px auto 16px;max-width:650px}
 .welcome-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;text-align:left}
@@ -50,11 +53,11 @@ footer{text-align:center;color:#69708e;font-size:13px;margin:18px}
 .welcome-language h3{text-align:center;margin:2px 0 8px;color:#344b91;font-size:15px}
 .welcome-language .welcome-lead{font-size:12px;line-height:1.38;margin:6px 2px 9px}
 .welcome-language .welcome-grid{grid-template-columns:1fr;gap:7px}
-.welcome-language .welcome-item{font-size:11.5px;line-height:1.35;padding:8px 9px;border-radius:10px}
+.welcome-language .welcome-item{font-size:13px;line-height:1.45;padding:10px 11px;border-radius:10px}
 .welcome-language .welcome-item strong{margin-bottom:2px}
 @media(max-width:560px){.welcome-bilingual{grid-template-columns:1fr 1fr;gap:6px}.welcome-card{padding:9px;max-height:96vh}.welcome-language{padding:6px}.welcome-language h3{font-size:12px}.welcome-language .welcome-lead{font-size:10px;line-height:1.25}.welcome-language .welcome-item{font-size:9.5px;line-height:1.25;padding:6px}.welcome-language .welcome-item strong{font-size:9.5px}.welcome-count{font-size:10px;margin-top:8px}}
 </style></head>
-<body>
+<body class="welcome-active">
 
 <div id="welcomeIntro" role="dialog" aria-modal="true" aria-labelledby="welcomeTitle">
  <div class="welcome-card">
@@ -607,7 +610,7 @@ collectStaticText();renderMap();
  const tick=setInterval(()=>{
   remaining--; secondsLabel.textContent=Math.max(0,remaining);
   progress.style.width=((18-remaining)/18*100)+"%";
-  if(remaining<=0){clearInterval(tick);overlay.style.opacity="0";overlay.style.transition="opacity .45s ease";setTimeout(()=>overlay.remove(),460);}
+  if(remaining<=0){clearInterval(tick);overlay.style.opacity="0";overlay.style.transition="opacity .45s ease";setTimeout(()=>{overlay.remove();document.body.classList.remove("welcome-active");},460);}
  },1000);
 })();
 </script></body></html>
