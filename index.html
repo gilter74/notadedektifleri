@@ -11,7 +11,7 @@
 header{position:relative;background:linear-gradient(110deg,#223568,#7353bd 68%,#b75d9d);color:#fff;text-align:center;padding:23px 14px;box-shadow:0 5px 20px #25345a33}
 header h1{font-size:clamp(26px,5vw,42px);margin:0}header p{margin:7px 0 0}
 .langbar{display:flex;justify-content:center;align-items:center;gap:8px;margin:0 auto 10px;font-weight:800}.langbar select{border:1px solid #ffffff88;border-radius:10px;padding:7px 10px;font:inherit;color:#263052;background:#fff}.langstatus{font-size:11px;opacity:.8;margin-top:5px}.wrap{max-width:1000px;margin:20px auto;padding:0 13px 40px}.stats{display:flex;gap:9px;justify-content:center;flex-wrap:wrap;margin-bottom:16px}
-.stat{background:white;border-radius:14px;padding:10px 15px;font-weight:800;box-shadow:0 4px 14px #28345c12}
+.stat{background:white;border-radius:14px;padding:10px 15px;font-weight:800;box-shadow:0 4px 14px #28345c12}.bonus-life{display:none;margin-left:6px;border:0;border-radius:9px;background:#fff0bd;color:#805400;padding:3px 7px;font-weight:950;cursor:pointer}.life-rule{margin:14px 0;padding:14px 16px;border:2px solid #efc65d;border-radius:16px;background:linear-gradient(120deg,#fff9df,#fff1d2);color:#59451a;font-weight:700;line-height:1.55}.life-rule strong{color:#805400}
 .panel{background:#ffffffed;border:1px solid #e5e2f3;border-radius:22px;padding:20px;box-shadow:0 10px 28px #34406b13}
 h2{margin:0 0 10px;color:#3b4077}.worlds{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px}
 .world{border:2px solid #e6e3f3;background:linear-gradient(145deg,#fff,#f7f3ff);border-radius:17px;padding:14px;text-align:left;cursor:pointer;color:var(--ink)}
@@ -93,8 +93,8 @@ body.welcome-active> :not(#welcomeIntro){visibility:hidden!important}
 
 <header><div class="langbar"><label for="languageSelect">🌐 Dil / Language / Язык</label><select id="languageSelect" onchange="changeLanguage(this.value)"><option value="tr">🇹🇷 Türkçe</option><option value="en">🇬🇧 English</option><option value="ru">🇷🇺 Русский</option></select></div><h1>🎼 NOTA DEDEKTİFLERİ</h1><p>🏰 Müzik Krallığının Sırları · RockJazz Müzik Eğitimi</p><div id="translationStatus" class="langstatus">Dil seçimi: Türkçe</div></header>
 <div class="wrap">
-<div class="stats"><div class="stat">⭐ Puan: <span id="score">0</span></div><div class="stat">❤️ Can: <span id="lives">3</span></div><div class="stat">🏅 Rozet: <span id="badges">0</span>/7</div></div>
-<section id="menu" class="panel"><h2>Macera haritan hazır, dedektif!</h2><p>Her dünyada farklı sayıda soru var. Bazılarında cevabı kendin yazacak, bazılarında şekilleri tanıyacak, bazılarında doğru seçeneği bulacaksın.</p><div class="worlds" id="worlds"></div><div class="lesson"><b>Oyun kuralı:</b> Her doğru cevap 10 puan. Yazılı sorularda cevabını kendi cümlenle verebilirsin. Yazım farklılıkları sorun değildir. Bir dünyayı tamamlayınca sonraki dünya açılır.</div></section>
+<div class="stats"><div class="stat">⭐ Puan: <span id="score">0</span></div><div class="stat">❤️ Can: <span id="lives">3</span><button id="bonusLifeBadge" class="bonus-life" type="button" title="İki bölümü hiç yanlış yapmadan bitirdiğin için sonraki bölümde +1 ek can kazandın." onclick="showBonusLifeInfo()">+1</button></div><div class="stat">🏅 Rozet: <span id="badges">0</span>/7</div></div>
+<section id="menu" class="panel"><h2>Macera haritan hazır, dedektif!</h2><p>Her dünyada farklı sayıda soru var. Bazılarında cevabı kendin yazacak, bazılarında şekilleri tanıyacak, bazılarında doğru seçeneği bulacaksın.</p><div class="life-rule">❤️ <strong>CAN VE BONUS CAN KURALI</strong><br>Her bölümde 3 canın var. Arka arkaya oynadığın 2 bölümü de hiç yanlış yapmadan tamamlarsan, sonraki bölüme <strong>+1 ek can</strong> kazanırsın. Bu bonus her 2 bölümde bir yeniden değerlendirilir; iki bölümlük yeni turda şartı tekrar sağlaman gerekir. +1 işaretine dokunarak veya üzerine gelerek açıklamasını görebilirsin. Sorular her yeni oyunda karışık sırayla gelir; ezberlemek yerine öğrenerek ilerle!</div><div class="worlds" id="worlds"></div><div class="lesson"><b>Oyun kuralı:</b> Her doğru cevap 10 puan. Yazılı sorularda cevabını kendi cümlenle verebilirsin. Yazım farklılıkları sorun değildir. Bir dünyayı tamamlayınca sonraki dünya açılır.</div></section>
 <section id="game" class="panel">
 <div class="topline"><button class="back" onclick="backToMap()">← Harita</button><strong id="worldTitle"></strong><strong id="qCount">1 / 20</strong></div><div id="examStage" style="display:none;margin-top:10px;padding:10px;border-radius:12px;background:#fff4d9;font-weight:800;text-align:center"></div><div id="examAttemptInfo" style="display:none;margin-top:8px;font-weight:800;text-align:center"></div>
 <div id="examTimer" style="display:none;margin:12px auto;padding:10px 18px;max-width:190px;border-radius:18px;background:#eaf4ff;border:2px solid #739bdc;text-align:center">
@@ -440,6 +440,10 @@ function playWrongSound(){
 }
 
 let score=0,lives=3,unlocked=1,completed=new Set(),worldIndex=0,qIndex=0,answered=false;
+let worldHadMistake=false, completedInPair=0, perfectInPair=0, pendingBonusLife=false;
+function showBonusLifeInfo(){alert("+1 EK CAN: Arka arkaya oynadığın 2 bölümü hiç yanlış yapmadan tamamlarsan, bir sonraki bölümde 3 yerine 4 canla başlarsın. Bonus her 2 bölümde bir yeniden değerlendirilir.")}
+function updateBonusBadge(){const b=$("bonusLifeBadge");if(b)b.style.display=pendingBonusLife?"inline-block":"none"}
+function shuffleQuestions(arr){for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]]}}
 let examAttempt=0,examCorrect=0,examWrong=0,examStageCorrect=0,examStageResults=[],examResults=[],examPassed=false,examAnswersRevealed=false,examBestNet=0;
 let examTimerInterval=null,examSecondsLeft=15,examWarningPlayed=false,examAdvanceTimeout=null;
 function stopExamTimer(){
@@ -494,10 +498,10 @@ function beginExam(){
 const $=id=>document.getElementById(id);
 async function trTextBack(value){const target=currentLang;currentLang="tr";const result=await (async()=>{try{const u="https://translate.googleapis.com/translate_a/single?client=gtx&sl="+target+"&tl=tr&dt=t&q="+encodeURIComponent(value);const r=await fetch(u);const d=await r.json();return(d[0]||[]).map(x=>x[0]||"").join("")||value}catch(e){return value}})();currentLang=target;return result}
 function norm(s){return String(s||"").toLocaleLowerCase("tr").normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[.,!?;:]/g," ").replace(/\s+/g," ").trim()}
-function updateStats(){$("score").textContent=score;$("lives").textContent=lives;$("badges").textContent=completed.size}
+function updateStats(){$("score").textContent=score;$("lives").textContent=lives;$("badges").textContent=completed.size;updateBonusBadge()}
 async function renderMap(){$("menu").style.display="block";$("game").style.display="none";$("worlds").innerHTML="";
 for(let i=0;i<worlds.length;i++){const w=worlds[i];let b=document.createElement("button");b.className="world";b.disabled=i>=unlocked;const name=await trText(w.name),desc=await trText(w.desc),status=completed.has(i)?"🏅 "+await trText("Rozet kazanıldı"):i<unlocked?"▶ "+await trText("Oynamaya hazır"):"🔒 "+await trText("Kilitli");b.innerHTML=`<div class="emoji">${w.emoji}</div><strong>${i+1}. ${name}</strong><small>${desc}<br>${w.qs.length} ${await trText("soru · yazılı ve görsel sorular")}${w.exam?"<br>🎁 Finalde 350 puan: ücretsiz solfej dersi":""}</small><div class="tag">${status}</div>`;b.onclick=()=>startWorld(i);$("worlds").appendChild(b)}updateStats()}
-function startWorld(i){stopExamTimer();$("examStageContinue").style.display="none";worldIndex=i;qIndex=0;lives=3;answered=false;$("menu").style.display="none";$("game").style.display="block";$("finish").style.display="none";$("examIntro").style.display="none";$("examTimer").style.display="none";$("playArea").style.display="block";if(worlds[i].exam){examAttempt=0;examResults=[];examPassed=false;examAnswersRevealed=false;examBestNet=0;$("playArea").style.display="none";$("examIntro").style.display="block";$("examAnswerKey").style.display="none";return}loadQuestion()}
+function startWorld(i){stopExamTimer();$("examStageContinue").style.display="none";worldIndex=i;qIndex=0;worldHadMistake=false;shuffleQuestions(worlds[i].qs);lives=3+(pendingBonusLife?1:0);pendingBonusLife=false;answered=false;updateStats();$("menu").style.display="none";$("game").style.display="block";$("finish").style.display="none";$("examIntro").style.display="none";$("examTimer").style.display="none";$("playArea").style.display="block";if(worlds[i].exam){examAttempt=0;examResults=[];examPassed=false;examAnswersRevealed=false;examBestNet=0;$("playArea").style.display="none";$("examIntro").style.display="block";$("examAnswerKey").style.display="none";return}loadQuestion()}
 
 function startExamAttempt(){
   examAttempt++;
@@ -542,7 +546,7 @@ if(worlds[worldIndex].exam){
  $("explain").textContent="🔎 Doğru cevabı hemen göstermiyoruz. Deneme bitince sonucunu görecek, cevap anahtarı açıldığında açıklamaları inceleyebileceksin.";
 } else {
  if(ok){score+=10;$("feedback").textContent="🎉 "+await trText("Harika! Doğru cevap. +10 puan");$("feedback").style.background="#e9fff7"}
- else{lives--;$("feedback").textContent=message||("🌱 "+await trText("Bu kez olmadı. Açıklamayı oku, öğrenmeye devam et."));$("feedback").style.background="#fff0f3"}
+ else{worldHadMistake=true;lives--;$("feedback").textContent=message||("🌱 "+await trText("Bu kez olmadı. Açıklamayı oku, öğrenmeye devam et."));$("feedback").style.background="#fff0f3"}
  $("explain").textContent="📘 "+await trText(worlds[worldIndex].qs[qIndex].explain);
 }
 $("next").style.display="inline-block";$("next").textContent=qIndex===worlds[worldIndex].qs.length-1?await trText("Denemeyi tamamla 🏁"):await trText("Sonraki soru →");updateStats()}
@@ -592,7 +596,10 @@ async function nextQuestion(){
   $("examAttemptInfo").style.display="none";
   return;
  }
- completed.add(worldIndex);unlocked=Math.max(unlocked,Math.min(worlds.length,worldIndex+2));updateStats();$("playArea").style.display="none";$("finish").style.display="block";$("bar").style.width="100%";$("finishTitle").textContent="🏅 "+await trText(worlds[worldIndex].name+" tamamlandı!");$("finishText").textContent=await trText(worlds[worldIndex].qs.length+" soruluk dünyayı bitirdin. Toplam puanın: "+score+". "+(completed.size===worlds.length?"Tebrikler! Nota Ustası oldun!":"Yeni dünya açıldı. Maceraya devam et!"))
+ completed.add(worldIndex);unlocked=Math.max(unlocked,Math.min(worlds.length,worldIndex+2));
+ completedInPair++;if(!worldHadMistake)perfectInPair++;
+ let bonusAwarded=false;if(completedInPair>=2){if(perfectInPair===2){pendingBonusLife=true;bonusAwarded=true;}completedInPair=0;perfectInPair=0;}
+ updateStats();$("playArea").style.display="none";$("finish").style.display="block";$("bar").style.width="100%";$("finishTitle").textContent="🏅 "+await trText(worlds[worldIndex].name+" tamamlandı!");$("finishText").textContent=await trText(worlds[worldIndex].qs.length+" soruluk dünyayı bitirdin. Toplam puanın: "+score+". "+(bonusAwarded?" Harika! İki bölümü hatasız tamamladın; sonraki bölüm için +1 ek can kazandın!":(completedInPair===1?" İlk bölüm tamamlandı. İkinci bölümü de hiç yanlış yapmadan bitirirsen +1 can kazanabilirsin.":""))+(completed.size===worlds.length?" Tebrikler! Nota Ustası oldun!":" Yeni dünya açıldı. Maceraya devam et!"))
 }
 function continueExamStage(){
  $("examStageContinue").style.display="none";
