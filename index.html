@@ -553,7 +553,7 @@ if(worlds[worldIndex].exam){
 }
 $("next").style.display="inline-block";$("next").textContent=qIndex===worlds[worldIndex].qs.length-1?await trText("Denemeyi tamamla 🏁"):await trText("Sonraki soru →");updateStats()}
 async function choose(j,btn){if(answered)return;let q=worlds[worldIndex].qs[qIndex],buttons=[...$("answers").children];buttons.forEach((b)=>{b.disabled=true});let ok=j===q.correct;if(!worlds[worldIndex].exam){buttons.forEach((b,k)=>{if(k===q.correct)b.classList.add("correct")});if(!ok)btn.classList.add("wrong")}await markResult(ok,ok?"":"🌱 "+await trText("Bir sonraki soruda tekrar dene!"))}
-async function submitTyped(){if(answered)return;let q=worlds[worldIndex].qs[qIndex],v=norm($("typed").value);if(!v){$("feedback").textContent=await trText("Önce cevabını yazmalısın 🙂");return}let translatedInput=v;if(currentLang!=="tr")translatedInput=norm(await trTextBack($("typed").value));let ok=q.aliases.some(a=>{let na=norm(a);return translatedInput===na||((na.length>=7||translatedInput.length>=7)&&(translatedInput.includes(na)||na.includes(translatedInput))) });
+async function submitTyped(){if(answered)return;let q=worlds[worldIndex].qs[qIndex],v=norm($("typed").value);if(!v){$("feedback").textContent=await trText("Önce cevabını yazmalısın 🙂");return}let translatedInput=v;if(currentLang!=="tr")translatedInput=norm(await trTextBack($("typed").value));let ok=q.aliases.some(a=>translatedInput===norm(a));
 $("typed").disabled=true;await markResult(ok,ok?"":"🌱 "+await trText("Cevabını aldım. Bu soruda beklenen cevap: ")+await trText(q.aliases[0])+". "+await trText("Açıklamayı okuyup öğrenebilirsin."))}
 async function nextQuestion(){
  if(worlds[worldIndex].exam && qIndex%10===9 && qIndex<39){
